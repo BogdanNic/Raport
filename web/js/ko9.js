@@ -12,6 +12,50 @@
  * Time: 10:12 PM
  * To change this template use File | Settings | File Templates.
  */
+ko.extenders.numeric = function(target, overrideMessage) {
+    //add some sub-observables to our observable
+    target.hasError = ko.observable();
+    target.validationMessage = ko.observable();
+
+    //define a function to do validation
+    function validate(newValue) {
+        if(newValue==""){
+            target.hasError(true);
+            target.validationMessage("Value is 0");
+            return target;
+        }else
+        {
+            var n1=parseInt(newValue,10);
+            var n2=Number(newValue);
+            if(isNaN(n1) ||isNaN(n2)) {
+                target.hasError(true);
+                target.validationMessage("This field is numberic");
+                return target;
+            }else{
+                if((n1<0) || (10<n1) ) {
+                    target.hasError(true);
+                    target.validationMessage("Trebuie sa fie intre  0 si 10");
+                    return target;
+
+                }else{
+                    target.hasError(false);
+                    target.validationMessage("mulst be 1 to 10");
+                    return target;
+                }
+            }
+        }
+
+    }
+
+    //initial validation
+    validate(target());
+
+    //validate whenever the value changes
+    target.subscribe(validate);
+
+    //return the original observable
+    return target;
+};
 ko.bindingHandlers.dateString = {
     update: function(element, valueAccessor, allBindingsAccessor, viewModel) {
         var value = valueAccessor(), allBindings = allBindingsAccessor();
@@ -158,6 +202,7 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             xmlhttp.onreadystatechange =function(){
                 if (xmlhttp.readyState==4)
                 {
+                            debugger;
 
                             if(xmlhttp.status === 200 || xmlhttp.status === 201 ){
                                 var d= xmlhttp.responseText;
@@ -165,6 +210,9 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
                                 switch(obj.type){
 
                                     case "Register":
+                                        //debugger;
+
+                                        callback.call(my2,ds);
                                         break;
                                     case "Login":
                                         callback.call(my2,ds);
@@ -228,7 +276,7 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
     my.restApi=authToken;
     my.Login = function (username, password,callback) {
         //  var isTrue=post(username,password) ;
-        var stringToPost = createString({email:username, password:password});
+        var stringToPost = createString({username:username, password:password});
         post(stringToPost,restLogin);
         util.send({data:stringToPost,urlLink:restLogin,method:"POST",type:"Login"},function(result){
             // results=result;
@@ -243,9 +291,22 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
 
     };
 
-    my.NewUser = function (name, username, password, email) {
+    my.NewUser = function (name, username, password, email,callback) {
         var stringToPost = createString({name:name, username:username, password:password, email:email});
-        post(stringToPost, newUserLink);
+        post(stringToPost, restRegister);
+        util.send({data:stringToPost,urlLink:restRegister,method:"POST",type:"Register"},function(result){
+            // results=result;
+            debugger;
+            if(result.error===false){
+                //user=username;
+                ////alert(result.api_key);
+                //my.restApi=result.api_key;
+                callback(result);
+            }
+            else{
+                alert(result.message);
+            }
+        });
 
     };
     my.GetData=function checkCode(){
@@ -354,11 +415,11 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             self.minute=ko.observable(  data.Minute());
 
             self.partner=ko.observable( data.Partener());
-            self.visite=ko.observable(  data.Visite());
-            self.carti=ko.observable(   data.Carti());
-            self.reviste=ko.observable( data.Reviste());
-            self.studi=ko.observable(   data.Studi());
-            self.brosuri=ko.observable( data.Brosuri());
+            self.visite = ko.observable(data.Visite()).extend({numeric: "numeric"});
+            self.carti=ko.observable(   data.Carti()).extend({numeric:"numeric"});
+            self.reviste=ko.observable( data.Reviste()).extend({numeric:"numeric"});
+            self.studi=ko.observable(   data.Studi()).extend({numeric:"numeric"});
+            self.brosuri=ko.observable( data.Brosuri()).extend({numeric:"numeric"});
             self.date=ko.observable(                 data.date);
             self.dateComp=data;
 
@@ -586,7 +647,9 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
     myApp.User=User;
 }(myApp));
 (function(myApp){
+    "use strict";
     function TestBog(){
+        "use strict";
         var vector=[];
         var self=this;
         self.nr=ko.observable(20);
@@ -602,8 +665,79 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
     }
     myApp.TestBog=TestBog;
 }(myApp));
+(function(myApp,Parse){
+    //TODO:parse
+    "use strict";
 
-(function(myApp,net){
+    var parseBog={};
+
+
+        var self=this;
+
+    parseBog.name="";
+    Object.defineProperty(parseBog, 'fullName', {
+        get: function() {
+            return "bog" + ' ' + "nic";
+        },
+        set: function(name) {
+            parseBog.name=name;
+            //var words = name.split(' ');
+            //this.firstName = words[0] || '';
+            //this.lastName = words[1] || '';
+        }
+    });
+      // parseBog.currentUser=Parse.User.current();
+       //parseBog.currentUser2=function(){
+       //    var currentUser = Parse.User.current();
+       //    if (currentUser) {
+       //        // do stuff with the user
+       //    } else {
+       //        // show the signup or login page
+       //    }
+       //};
+       parseBog.logOut=function(){
+           Parse.User.logOut();
+       };
+       parseBog.signUp=function(username,password,email,callback){
+           var user = new Parse.User();
+           user.set("username", username);
+           user.set("password", password);
+           user.set("email", email);
+
+// other fields can be set just like with Parse.Object
+           user.set("phone", "415-392-0202");
+
+           user.signUp(null, {
+               success: function(user) {
+                   // Hooray! Let them use the app now.
+               },
+               error: function(user, error) {
+                   // Show the error message somewhere and let the user try again.
+                   alert("Error: " + error.code + " " + error.message);
+               }
+           });
+       };
+       parseBog.login=function(username,password,callback){
+           debugger;
+           Parse.User.logIn(username,password, {
+               success: function(user) {
+                   // Do stuff after successful login.
+                   alert("LogIn");
+                   callback.call(parseBog,true);
+               },
+               error: function(user, error) {
+                   // The login failed. Check error to see why.
+                   alert(error);
+                   callback.call(parseBog,false);
+               }
+           });
+       };
+
+
+    myApp.ParseBog=parseBog;
+
+}(myApp,Parse));
+(function(myApp,net,parse){
     function RaportsViewModel(){
         var self=this;
         self.name="bog5";
@@ -664,15 +798,31 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
         }
         self.LogonUser=function(){
             var listNew=[];
+            parse.name="alex";
+            var d=parse.name;
+            parse.login("marco2","123456",function(parseRes){
+                debugger;
+                //ok;
+                var d=parseRes;
+            });
             net.Login(self.User().name(),self.User().password(),function(result){
                 console.log(result);
                 if(result.error===false){
+
                    // GetMonthsYaer(result.Raports, listNew);
                     loadReports();
                 }
 
             });
-        }
+        };
+        self.registerUser=function(){
+            debugger;
+          net.NewUser("name", "username", "password","email",function(result){
+              debugger;
+
+          });
+        };
+
         function GetMonthsYaer(r, listNew) {
             for (var i = 0; i < r.length; i++) {
                 var reportFromJson = r[i];
@@ -910,7 +1060,7 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
         };
     }
     myApp.RaportsViewModel= RaportsViewModel;
-})(myApp,myApp.net);
+})(myApp,myApp.net,myApp.ParseBog);
 
 (function (myApp){
     function MonthView(luna,vector){

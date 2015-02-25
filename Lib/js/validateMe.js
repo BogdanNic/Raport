@@ -55,6 +55,11 @@ $("#addform").validate({
     },
     submitHandler:function(){
         alert("asd");
+
+        debugger;
+        myApp.net.NewUser("user1","bo1","boasd@asd","123456",function(result){
+            debugger;
+        });
     },
     highlight:function(element,errorClass){
         $(element).closest('.form-control').removeClass('success').addClass('error');

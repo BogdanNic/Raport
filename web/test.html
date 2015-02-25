@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<link rel="stylesheet" media="screen" href="../Lib/css/cosmo.css">
+<style>
+    .error{
+        color:red;
+    }
+</style>
+
+<input type="text" data-bind="value:Username"/>
+<span  data-bind="text:Username"></span>
+
+<p data-bind="css: { error: Books.hasError }">
+<input type="number" min="0" max="10" data-bind='value: Books, valueUpdate: "afterkeydown"' />
+<span data-bind='visible: Books.hasError, text: Books.validationMessage'> </span>
+</p>
+<form>
+    <p data-bind="css: { error: Books.hasError }">
+        <input type="number" min="0" max="10" data-bind='value: Books, valueUpdate: "afterkeydown"' />
+        <span data-bind='visible: Books.hasError, text: Books.validationMessage'> </span>
+    </p>
+</form>
+<div class="container-fluid">
+    <form>
+        <div class="form-group" >
+            <label for="books">Books</label>
+            <p data-bind="css: { error: Books.hasError }">
+            <input type="number" class="form-control" id="books" data-bind='value: Books, valueUpdate: "afterkeydown"' placeholder="Books">
+            <span data-bind='visible: Books.hasError, text: Books.validationMessage'> </span>
+            </p>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputFile">File input</label>
+            <input type="file" id="exampleInputFile">
+            <p class="help-block">Example block-level help text here.</p>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox"> Check me out
+            </label>
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+</div>
+
+
+<span  data-bind="text:Books"></span>
+
+
+<p data-bind="css: { error: firstName.hasError }">
+    <input data-bind='value: firstName, valueUpdate: "afterkeydown"' />
+    <span data-bind='visible: firstName.hasError, text: firstName.validationMessage'> </span>
+</p>
+<p data-bind="css: { error: lastName.hasError }">
+    <input data-bind='value: lastName, valueUpdate: "afterkeydown"' />
+    <span data-bind='visible: lastName.hasError, text: lastName.validationMessage'> </span>
+</p>
+<script type="text/javascript" src="../Lib/js/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="../Lib/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../Lib/js/bootstrap-datepicker2.js"></script>
+<script type="text/javascript" src="../Lib/js/kn230.js"></script>
+<!--<script type="text/javascript" src="//www.parsecdn.com/js/parse-1.3.5.min.js"></script>-->
+<script type="text/javascript" src="../Lib/js/parse-1.3.5.js"></script>
+<script type="text/javascript" src="js/koValidation.js"></script>
+<script type="text/javascript" src="../Lib/js/jquery_validate.js" ></script>
+<script type="text/javascript" src="../Lib/js/validateMe.js"></script>
+</body>
+</html>

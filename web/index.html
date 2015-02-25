@@ -144,7 +144,7 @@ You can use nearly any combination of these classes to create more dynamic and f
     <button data-bind="click:addNewRaport" class="btn btn-primary col-md-2  col-sm-2 col-xs-6 "><span class="glyphicon glyphicon-plus-sign"></span> Add</button>
     <button data-bind="click:SaveToDatabase" class="btn btn-primary col-md-2 col-sm-2  col-xs-6 "><span class="glyphicon glyphicon-save"></span> Save</button>
     <button data-bind="click:PrintRaport" class="col-md-1 btn btn-primary col-md-2 col-sm-2  col-xs-6 "><span class="glyphicon glyphicon-print"></span> Print</button>
-
+    <button data-bind="click:registerUser" class="col-md-1 btn btn-primary col-md-2 col-sm-2  col-xs-6 "><span class="glyphicon glyphicon-user"></span> Register</button>
 </div>
 <div class="bogSpace">
 
@@ -472,29 +472,47 @@ You can use nearly any combination of these classes to create more dynamic and f
                         <tr>
 
                              <td> <label class="col-lg-2 control-label">Partener </label></td>
-                            <td> <input type="text" class="form-control" data-bind="value:partner"/></td>
+                            <td>
+                                <input type="text" class="form-control" data-bind="value:partner,valueUpdate: 'afterkeydown'"/>
+
+                            </td>
 
                         </tr>
                         <tr>
 
 
-                            <td class="hidden-xs"><label class="col-lg-2 control-label">Reviste </label></td>
-                            <td>    <input type="number" class="form-control" data-bind="value:reviste" placeholder="Reviste"/></td>
-                            <td class="hidden-xs"> <label class="col-lg-2 control-label">Brosuri </label></td>
-                            <td>    <input type="number" class="form-control" data-bind="value:brosuri" placeholder="Brosuri"/></td>
+                            <td class="hidden-xs">
+                                <label class="col-lg-2 control-label">Reviste </label>
+                            </td>
+                            <td>
+                                <input type="number" class="form-control" data-bind="value:reviste,valueUpdate: 'afterkeydown'" placeholder="Reviste"/>
+                                <span data-bind='visible: reviste.hasError, text: reviste.validationMessage'> </span>
+                            </td>
+                            <td class="hidden-xs">
+                                <label class="col-lg-2 control-label">Brosuri </label></td>
+                            <td>
+                                <input type="number" class="form-control" data-bind="value:brosuri,valueUpdate: 'afterkeydown'" placeholder="Brosuri"/>
+                                <span data-bind='visible: brosuri.hasError, text: brosuri.validationMessage'> </span>
+                            </td>
 
                         </tr>
                           <tr>
                               <td> <label class="col-lg-2 control-label">Carti </label></td>
-                              <td><input type="number" class="form-control" data-bind="value:carti" placeholder="Carti"/></td>
+                              <td><input type="number" class="form-control" data-bind="value:carti ,valueUpdate: 'afterkeydown'" placeholder="Carti"/>
+                                  <span data-bind='visible: carti.hasError, text: carti.validationMessage'> </span>
+                              </td>
 
                           </tr>
                         <tr>
 
                             <td class="hidden-xs"> <label class="col-lg-2 control-label">Visite </label></td>
-                            <td> <input type="number" class="form-control" data-bind="value:visite" placeholder="Visite"/></td>
+                            <td> <input type="number" class="form-control" data-bind="value:visite,valueUpdate: 'afterkeydown'" placeholder="Visite"/>
+                                <span data-bind='visible: visite.hasError, text: visite.validationMessage'> </span>
+                            </td>
                             <td class="hidden-xs"> <label class="col-lg-2 control-label">Studii</label></td>
-                            <td> <input type="number" class="form-control" data-bind="value:studi" placeholder="Studii"/></td>
+                            <td> <input type="number" class="form-control" data-bind="value:studi,valueUpdate: 'afterkeydown'" placeholder="Studii"/>
+                                <span data-bind='visible: studi.hasError, text: studi.validationMessage'> </span>
+                            </td>
                         </tr>
 
 
@@ -652,7 +670,7 @@ You can use nearly any combination of these classes to create more dynamic and f
                         </div>
 
                     </div>
-                    <button type="submit" class="btn btn-success">Add new user</button>
+                    <button type="submit" class="btn btn-success" >Add new user</button>
                     <button class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </form>
 
@@ -674,11 +692,17 @@ You can use nearly any combination of these classes to create more dynamic and f
 <script type="text/javascript" src="../Lib/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../Lib/js/bootstrap-datepicker2.js"></script>
 <script type="text/javascript" src="../Lib/js/kn230.js"></script>
+<!--<script type="text/javascript" src="//www.parsecdn.com/js/parse-1.3.5.min.js"></script>-->
+<script type="text/javascript" src="../Lib/js/parse-1.3.5.js"></script>
 <script type="text/javascript" src="js/ko9.js"></script>
 <script type="text/javascript" src="../Lib/js/jquery_validate.js" ></script>
 <script type="text/javascript" src="../Lib/js/validateMe.js"></script>
+
 <!--<script type="text/javascript" src="Lib/js/charts.js"></script>-->
 <script type="text/javascript">
+
+    Parse.initialize("D4qRI513LE4vZVQtwg8TIYOgaQVcCLrHZO61Uokg", "MmxbTqmv9LhNbmPO7knuw0KIBOyorjKjyNj3PROe");
+
     var app = new myApp.App();
 
     app.run();
