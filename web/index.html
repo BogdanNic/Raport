@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>raports</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--<link href='http://fonts.googleapis.com/css?family=Roboto:500' rel='stylesheet' type='text/css'>-->
+    <!--<link rel="stylesheet" media="screen" href="../Lib/css/bootstrap.css"/>-->
+    <!--<link rel="stylesheet" media="screen" href="../Lib/css/paper.css">-->
+    <!--<link rel="stylesheet" media="screen" href="../Lib/css/apple.css">-->
+    <link rel="stylesheet" media="screen" href="../Lib/css/cosmo.css">
+
+    <link rel="stylesheet"                href="../Lib/css/calendar2.css"/>
+    <style type="text/css">
+        .print .row{
+            width: 200px;
+        }
+        .datepicker{
+            z-index: 1151 !important;
+        }
+        .oreInput{
+            width:200px;
+
+
+        }
+        .bogSpace{
+            height: 30px;
+        }
+        .bogTableWidth{
+            width: 30px;
+        }
+        .glowing-border {
+            border: 2px solid #dadada;
+            border-radius: 7px;
+        }
+
+        .glowing-border:focus {
+            outline: none;
+            border-color: #9ecaed;
+            box-shadow: 0 0 10px #9ecaed;
+        }
+        body{
+            padding-top: 70px;
+            padding-bottom: 20px;;
+        }
+
+        .collectionBig {
+            height: 700px;
+        }
+        label.error {
+            font-weight: bold;
+            color: red;
+            /*background : url(assets/error.png ) center center no-repeat;*/
+            /*padding: 2px 8px;*/
+            margin-top: 2px;
+        }
+            /*		    .lineWeight>.bogTest{
+                        font-size: medium;
+                        font-weight: normal;
+                        font-family: "Lucida Console",sans-serif;
+                            height: 30px;
+                    }*/
+
+        .bogTitleLuna{
+            height: 36px;
+            padding-top: 13px;
+        }
+        .LunaName{
+            font-size: 20px;
+            width: 70px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+<div class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation" >
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">FinalRaport</a>
+    </div>
+    <div class="navbar-collapse collapse navbar-responsive-collapse">
+        <ul class="nav navbar-nav">
+            <li><a href="#">Chart</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Logon <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#newUserDialog" data-toggle="modal" >New user</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+        <form class="navbar-form navbar-right">
+            <input type="text" class="form-control col-lg-8" placeholder="Email" data-bind="value:User().name" >
+            <input type="password" class="form-control col-lg-8" placeholder="Password" data-bind="value:User().password" >
+            <button type="submit" data-bind="click:LogonUser" class="btn btn-success">Sign in</button>
+
+
+        </form>
+    </div>
+</div>
+<nav class="navbar navbar-default navbar-inverse navbar-fixed-top hidden" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigatrion</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Raports</a>
+
+    </div>
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="../Lib/chart/chartNouBun.html">Chart</a></li>
+        </ul>
+        <form class="navbar-form navbar-right" role="form">
+            <div class="form-group">
+                <label class="sr-only" for="exampleInputEmail2">Email address</label>
+                <input type="email" class="form-control" placeholder="User" id="exampleInputEmail2" data-bind="value:User().name"  >
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="exampleInputPassword2">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword2" placeholder="password" data-bind="value:User().password" >
+            </div>
+            <button type="submit" data-bind="click:LogonUser" class="btn btn-success">Sign in</button>
+        </form>
+    </div>
+</nav>
+
+
+<!--   <button class="btn btn-default" type="submit" data-bind="click:LogonUser" >Sign In</button>
+   <button type="button" data-bind="click:LogonUser" class="btn btn-primary">Primary</button>-->
+
+
+<!--The Bootstrap 3 grid system has four tiers of classes: xs (phones), sm (tablets), md (desktops), and lg (larger desktops).
+You can use nearly any combination of these classes to create more dynamic and flexible layouts.
+-->
+<div class="row ">
+    <button data-bind="click:loadRaports" class="btn btn-primary col-md-2 col-sm-2 col-xs-6 "> <span class="glyphicon glyphicon-cloud-download"></span> Load</button>
+    <button data-bind="click:addNewRaport" class="btn btn-primary col-md-2  col-sm-2 col-xs-6 "><span class="glyphicon glyphicon-plus-sign"></span> Add</button>
+    <button data-bind="click:SaveToDatabase" class="btn btn-primary col-md-2 col-sm-2  col-xs-6 "><span class="glyphicon glyphicon-save"></span> Save</button>
+    <button data-bind="click:PrintRaport" class="col-md-1 btn btn-primary col-md-2 col-sm-2  col-xs-6 "><span class="glyphicon glyphicon-print"></span> Print</button>
+
+</div>
+<div class="bogSpace">
+
+</div>
+
+<!--&lt;!&ndash; Split button &ndash;&gt;-->
+<!--<div class="btn-group">-->
+    <!--<button type="button" class="btn btn-success"><span class="glyphicon glyphicon-user"></span> Logon</button>-->
+    <!--<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">-->
+        <!--<span  class="caret"></span>-->
+    <!--</button>-->
+    <!--<ul class="dropdown-menu" role="menu">-->
+        <!--<li><a href="#newUserDialog" data-toggle="modal">NewUser</a></li>-->
+        <!--<li><a href="#">SignOut</a></li>-->
+        <!--<li class="divider"></li>-->
+        <!--<li><a href="#">RmemberMe</a></li>-->
+    <!--</ul>-->
+<!--</div>-->
+
+<!-- <a data-toggle="modal" href="#newUserDialog" class="btn btn-primary btn-lg">Launch demo modal</a>-->
+
+<div data-bind="visible:showProgress">
+    <div class="progress active progress-striped">
+        <div class="progress-bar" data-bind="style: { width: ProgressComputed}" >
+            <span ><span data-bind="text:progress"></span>% Complete</span>
+        </div>
+    </div>
+</div>
+
+
+<div class="row" data-bind="visible:!listChanges().length>0">
+    <div class="alert alert-success alert-dismissable">
+        <span class="badge" data-bind="text:listChanges().length"></span>
+        Nothing  be saved
+
+    </div>
+</div>
+<div class="row panel panel-warning"  data-bind="visible:listChanges().length>0">
+    <div class="panel-heading">
+         <h3 class="panel-title">To be saved</h3>
+    </div>
+    <div class="panel-body">
+        <div  data-bind="visible:listChanges().length>0">
+            <!--<div class="alert alert-success alert-dismissable">-->
+                <!--<span class="badge" data-bind="text:listChanges().length"></span>-->
+                <!--To be saved-->
+                <ul class="list-group"  data-bind="foreach:listChanges">
+                    <li class="list-group-item" data-bind="with:luna">
+                        <span data-bind="text:ID"      ></span>
+                        <span data-bind="text:Username"></span>
+                        <span data-bind="text:Partener"></span>
+                        <span data-bind="text:Ore()+':'+Minute()"></span>
+                        <!--<span data-bind="text:Minute"  ></span>-->
+                        <span data-bind="text:Reviste" ></span>
+                        <span data-bind="text:Brosuri" ></span>
+                        <span data-bind="text:Carti"   ></span>
+                        <span data-bind="text:Visite"  ></span>
+                        <span data-bind="text:Studi"   ></span>
+
+
+
+
+                        <span data-bind="text:$parent.command"></span>
+
+                        <!--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>-->
+                    </li>
+
+                </ul>
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+
+    <div class="collectionBig col-md-8" >
+
+        <ul class="nav nav-tabs" data-bind="foreach: raportsCollection">
+            <li data-bind="css: { active: $root.selected() === $data }">
+                <a href="#" data-bind="click: $root.selected, text: year"></a>
+            </li>
+        </ul>
+        <div class="tab-content" data-bind="foreach: raportsCollection">
+            <div class="tab-pane" data-bind="css: { active: $root.selected() === $data }">
+
+
+
+
+
+                <div class="well well-sm">
+                    <span>Ore </span>
+                    <span class="badge succes" data-bind="text:SumOre"></span>
+                    <span>Reviste</span>
+                        <span class="badge succes" data-bind="text:SumReviste">  </span>
+                    <span>Brosuri</span>
+                        <span class="badge succes" data-bind="text:SumBrosuri"> </span>
+                    <span>Carti</span>
+                        <span class="badge succes" data-bind="text:SumCarti">  </span>
+                    <span> Visite </span>
+                        <span class="badge succes" data-bind="text:SumVisite"></span>
+                </div>
+
+
+
+
+                <ul class="list-unstyled" data-bind="foreach:listView,fade:detail" id="listView">
+                    <!--
+
+                    -->
+
+                    <li class="container-fluid"  data-bind="visible:list().length>0">
+
+                        <div class="row">
+
+                            <div id="titeLuna" >
+                                 <div class="col-xs-6 col-md-3">
+                                           <span class="LunaName" data-bind="text:luna"></span> <i class="icon-time"></i>
+                                           <span data-bind="text:SumOre()+':'+SumMin()"></span>
+
+                                 </div>
+                                <div class="col-xs-6 col-md-3 col-md-push-6 ">
+                                    <div class="btn-group">
+                                        <button class="btn btn-success btn-sm" data-bind="click:enableDetail">View</button>
+                                        <button class="btn btn-success btn-sm" data-bind="click:disableDetail">Hide</button>
+                                    </div>
+                                </div>
+                                 <div class="col-xs-12 col-md-6 col-md-pull-3">
+
+                                     <span> </span> <span  > Reviste:</span> <span data-bind="text:SumReviste"></span>
+                                     <span> </span> <span  > Brosuri:</span> <span data-bind="text:SumBrosuri"></span>
+                                     <span> </span><span  > Carti:</span> <span data-bind="text:SumCarti"></span>
+                                     <span> </span><span  > Visite:</span> <span data-bind="text:SumVisite"></span>
+
+                                     <i class="icon-book"></i>
+
+
+                                 </div>
+
+
+
+
+
+
+
+                            </div>
+                            <div  data-bind="visible:detail">
+                                <table class="table table-condensed table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <!--     <th>Number</th>-->    <!--crl -shit slash desupra ?-->
+                                        <th>ID</th>
+                                        <th>U</th>
+                                        <th>P</th>
+                                        <th>Time</th>
+                                        <!--<th>O</th>-->
+                                        <!--<th>M</th>-->
+                                        <th>R</th>
+                                        <th>B</th>
+                                        <th>C</th>
+                                        <th>V</th>
+                                        <th>S</th>
+
+
+
+
+
+                                        <th class="bogTest hidden-xs">Data</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody data-bind="foreach:list,event:{mouseover:enableDetail}">
+                                    <tr>
+                                        <!--  <td data-bind="text:$index()+1"></td>-->
+                                        <td data-bind="text:ID"      ></td>
+                                        <td data-bind="text:Username"></td>
+                                        <td data-bind="text:Partener"></td>
+                                        <td><span data-bind="text:Ore()+':'+Minute()"></span></td>
+                                        <!--<td data-bind="text:Ore"     ></td>-->
+                                        <!--<td data-bind="text:Minute"  ></td>-->
+                                        <td data-bind="text:Reviste" ></td>
+                                        <td data-bind="text:Brosuri" ></td>
+                                        <td data-bind="text:Carti"   ></td>
+                                        <td data-bind="text:Visite"  ></td>
+                                        <td data-bind="text:Studi"   ></td>
+
+
+
+
+
+                                        <td><span class="hidden-xs" data-bind="dateString:date"></span></td>
+                                        <td><div class="btn-group">
+                                            <button  data-bind="click:$parents[2].EditRaport"
+                                                     class="btn btn-primary btn-sm"><i class="icon-edit icon-white"></i> Edit</button>
+                                            <button data-bind="click:$parents[2].removeProduct"
+                                                    class="btn btn-primary btn-sm"><i class="icon-minus icon-white"></i>Remove </button>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <div  class="col-md-4">
+        <div id="chart"></div>
+    </div>
+</div>
+<script id="myModalPrint" type="text/html">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-bind="click:close" aria-hidden="true">&times;</button>
+                <h3 data-bind="html:header"></h3>
+            </div>
+            <div class="modal-body">
+                <span>Nume</span><input data-bind="value:nameFriend" type="text">
+                <select data-bind="options:PrintColl,optionsText:'luna',value:printCurrent" ></select>
+
+                <div id="toPrint">
+
+                    <div data-bind="visible:printCurrent">
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+
+                                <div class="row print">
+                                    <div class="col-md-8">
+                                        <span data-bind="text:nameFriend"></span>
+
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>Luna</span>
+                                        <span data-bind="text:printCurrent().luna"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table class="table table-condensed ">
+                                <thead>
+                                <tr>
+                                    <th >Data</th>
+                                    <th>Carti</th>
+                                    <th>Brosuri</th>
+                                    <th colspan="2">Ore</th>
+                                    <th>Reviste</th>
+                                    <th>Vizite</th>
+                                    <th>Studii</th>
+
+                                </tr>
+                                </thead>
+                                <tbody data-bind="foreach:printCurrent().list">
+                                <tr>
+                                    <td><span data-bind="dateString:date"></span></td>
+                                    <td data-bind="text:Carti"   ></td>
+                                    <td data-bind="text:Brosuri" ></td>
+                                    <td data-bind="text:Ore"     ></td>
+                                    <td data-bind="text:Minute"  ></td>
+                                    <td data-bind="text:Reviste" ></td>
+                                    <td data-bind="text:Visite"  ></td>
+                                    <td data-bind="text:Studi"   ></td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th colspan="4">Total</th>
+                                    <th data-bind="text:printCurrent().SumOre"></th>
+                                    <th data-bind="text:printCurrent().SumReviste"></th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+                <div class="modal-footer">
+                    <a href="#" class="btn" data-bind="click:close,html:closeLabel"></a>
+                    <a href="#" class="btn btn-primary" data-bind="click:action,html:primaryLabel"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>
+
+<!-- Modal template -->
+<script id="myModal" type="text/html">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-bind="click:close" aria-hidden="true">&times;</button>
+                <h3 data-bind="html:header"></h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal"  role="form">
+                    <table class="table table-condensed">
+                        <tbody>
+                        <tr>
+                            <td> <label class="col-lg-2 control-label">Data</label></td>
+                            <td> <input type="datetime" class="form-control" data-bind="datePicker:date" data-date-format="dd/mm/yyyy" data-date-weekstart="1"
+                                        data-date-autoclose=true>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="col-lg-2 control-label hidden-xs">Ore</label>
+                                <input type="number" class="form-control"  data-bind="value:ore" pattern="[0-12]" min=0 max=12 placeholder="Ore"/>
+                            </td>
+                            <td>
+                                <label class="col-lg-2 control-label hidden-xs">Minute</label>
+                                <input type="number" class="form-control" data-bind="value:minute" pattern="[0-59]" min=0 max=59 placeholder="Minute"/>
+                            </td>
+                        </tr>
+                        <tr>
+
+                             <td> <label class="col-lg-2 control-label">Partener </label></td>
+                            <td> <input type="text" class="form-control" data-bind="value:partner"/></td>
+
+                        </tr>
+                        <tr>
+
+
+                            <td class="hidden-xs"><label class="col-lg-2 control-label">Reviste </label></td>
+                            <td>    <input type="number" class="form-control" data-bind="value:reviste" placeholder="Reviste"/></td>
+                            <td class="hidden-xs"> <label class="col-lg-2 control-label">Brosuri </label></td>
+                            <td>    <input type="number" class="form-control" data-bind="value:brosuri" placeholder="Brosuri"/></td>
+
+                        </tr>
+                          <tr>
+                              <td> <label class="col-lg-2 control-label">Carti </label></td>
+                              <td><input type="number" class="form-control" data-bind="value:carti" placeholder="Carti"/></td>
+
+                          </tr>
+                        <tr>
+
+                            <td class="hidden-xs"> <label class="col-lg-2 control-label">Visite </label></td>
+                            <td> <input type="number" class="form-control" data-bind="value:visite" placeholder="Visite"/></td>
+                            <td class="hidden-xs"> <label class="col-lg-2 control-label">Studii</label></td>
+                            <td> <input type="number" class="form-control" data-bind="value:studi" placeholder="Studii"/></td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                    <!--     <div class="form-group">
+                             <label class="col-lg-2 control-label">Date</label>
+                             <input type="datetime" class="form-control" data-bind="datePicker:date" data-date-format="dd/mm/yyyy" data-date-weekstart="1"
+                                    data-date-autoclose=true>
+                         </div>-->
+                    <!-- <div class="form-group">
+
+
+                         <div class="col-lg-10 form-control">
+
+
+
+
+                              </div>
+
+                     </div>
+                     <div class="form-group">
+
+                         <label class="col-lg-2 control-label">Partener</label>
+                         <div class="col-lg-10">
+                             <input type="text" class="glowing-border" data-bind="value:partner"/>
+                             <p class="help-block"></p>
+                         </div>
+                     </div>
+                     <div class="form-group">
+
+                         <label class="col-lg-2 control-label" >Studi</label>
+                         <div class="col-lg-10">
+                             <input type="number" class="glowing-border" data-bind="value:studi"/>
+
+                             <p class="help-block"></p>
+                         </div>
+
+                     </div>
+                     <div class="form-group">
+
+                         <label class="col-lg-2 control-label">Reviste</label>
+
+                         <div class="col-lg-10">
+                             <input type="number" class="form-control" data-bind="value:reviste"/>
+
+                             <p class="help-block"></p>
+                         </div>
+                     </div>
+                     <div class="form-group">
+
+                         <label class="col-lg-2 control-label">Visite</label>
+                         <div class="col-lg-10">
+                             <input type="number" class="form-control" data-bind="value:visite"/>
+
+                             <p class="help-block"></p>
+                         </div>
+                     </div>
+                     <div class="form-group">
+                         <label class="col-lg-2 control-label">Brosuri</label>
+
+                         <div class="col-lg-10">
+                             <input type="number" class="form-control" data-bind="value:brosuri"/>
+
+                             <p class="help-block"></p>
+                         </div>
+
+                     </div>-->
+                    <!--  <div class="control-group">
+                          <label class="control-label">Carti</label>
+
+                          <div class="controls">
+                              <input type="number" data-bind="value:carti"/>
+
+                              <p class="help-block"></p>
+                          </div>
+                      </div>
+          -->
+
+
+
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" data-bind="click:close,html:closeLabel"></a>
+                <a href="#" class="btn btn-primary" data-bind="click:action,html:primaryLabel"></a>
+            </div>
+        </div>
+    </div>
+</script>
+<div data-bind="bootstrapModal:editModal" data-keyboard="false" data-backdrop="static"></div>
+<div data-bind="bootstrapModal:addRaport" data-keyboard="false" data-backdrop="static"></div>
+<div data-bind="bootstrapModalPrint:printRaport" data-keyboard="false" data-backdrop="static"></div>
+
+<!--<div data-bind="with:editModal">-->
+<!--<input data-bind="value:header">-->
+<!--<input data-bind="value:ore">-->
+<!--<input data-bind="value:date">-->
+<!--<input data-bind="value:closeLabel">-->
+<!--<input data-bind="value:primaryLabel">-->
+<!--<textarea data-bind="value:body"></textarea>-->
+<!--<input data-bind="datePicker:date" data-date-format="dd/mm/yyyy" data-date-autoclose=true> <span class="add-on"><i-->
+<!--class="icon-th"></i></span>-->
+<!--</div>-->
+<!--<button data-bind="click:showModal">Show Modal</button>-->
+
+<div  class="modal fade" id="newUserDialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                New User
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addform" class="form-horizontal" role="form">
+
+                    <div class="form-group ">
+                        <label class="col-lg-2 control-label  ">Name</label>
+                        <div class="col-lg-10 ">
+                            <input type="text" id="name" name="name" class="form-control" required placeholder="Name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-2 ">User</label>
+
+                        <div class="col-lg-10 ">
+                            <input type="text" id="user" name="user" class="form-control" required placeholder="User">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-2 ">Email</label>
+
+                        <div class="col-lg-10">
+                            <input type="email" id="email" name="email" class="form-control" required placeholder="Email">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2  control-label ">Password</label>
+
+                        <div class="col-lg-10">
+                            <input type="text" id="password" name="password" class="form-control" required
+                                   placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label  ">Password Retype</label>
+
+                        <div class="col-lg-10">
+                            <input type="text" id="password2" name="password2" class="form-control col-lg-10" required
+                                   placeholder="Password">
+
+                        </div>
+
+                    </div>
+                    <button type="submit" class="btn btn-success">Add new user</button>
+                    <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </form>
+
+            </div>
+            <!--                <div class="modal-footer">
+
+                            </div>-->
+        </div>
+    </div>
+
+</div>
+
+
+
+</div>
+<!--Load the AJAX API-->
+<!--  <script type="text/javascript" src="https://www.google.com/jsapi"></script>-->
+<script type="text/javascript" src="../Lib/js/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="../Lib/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../Lib/js/bootstrap-datepicker2.js"></script>
+<script type="text/javascript" src="../Lib/js/kn230.js"></script>
+<script type="text/javascript" src="js/ko9.js"></script>
+<script type="text/javascript" src="../Lib/js/jquery_validate.js" ></script>
+<script type="text/javascript" src="../Lib/js/validateMe.js"></script>
+<!--<script type="text/javascript" src="Lib/js/charts.js"></script>-->
+<script type="text/javascript">
+    var app = new myApp.App();
+
+    app.run();
+</script>
+</body>
+</html>
