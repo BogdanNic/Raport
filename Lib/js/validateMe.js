@@ -75,7 +75,10 @@ $("#addform").validate({
                 $("#progress").parent().hide();
             });
        if(!result.error){
+
            $("#result").text("Welcome "+username+" !");
+           $('#newUserDialog').modal('hide');
+
        }else{
            $("#result").text("Eroro ! "+result.message+" !");
        }

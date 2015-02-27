@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<input type="text" data-bind="value: name"/>
+<input type="text" data-bind="value: title"/>
+<h1 data-bind="text: nameAndTitle"></h1>
+
+<script src="../Lib/js/kn230.js"></script>
+<script>
+
+    var ViewModel = function(){
+        var self = this;
+        self.name = ko.observable("Buffy");
+        self.title = ko.observable("The Vampire Slayer");
+        self.nameAndTitle = ko.computed({
+            read: function(){ return self.name() + ", " + self.title();},
+            write: function(value){
+                var nameAndTitle = value.split(', ');
+                self.name(nameAndTitle[0]);
+                self.title(nameAndTitle[1]);
+            }
+        });
+
+    };
+
+    ko.applyBindings(new ViewModel());
+
+
+</script>
+</body>
+</html>

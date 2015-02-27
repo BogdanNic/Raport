@@ -459,42 +459,39 @@ You can use nearly any combination of these classes to create more dynamic and f
                             </td>
 
                         </tr>
+
+                        <td class="hidden-xs">
+                            <label class="col-lg-2 control-label">Reviste </label>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" data-bind="value:reviste" placeholder="Reviste"/>
+                            <span data-bind='visible: reviste.hasError, text: reviste.validationMessage'> </span>
+                        </td>
+                        <td class="hidden-xs">
+                            <label class="col-lg-2 control-label">Brosuri </label></td>
+                        <td>
+                            <input type="number" class="form-control" data-bind="value:brosuri" placeholder="Brosuri"/>
+                            <span data-bind='visible: brosuri.hasError, text: brosuri.validationMessage'> </span>
+                        </td>
+
+                        </tr>
                         <tr>
-                            <td>
-                                <label class="col-lg-2 control-label hidden-xs">Ore</label>
-                                <input type="number" class="form-control"  data-bind="value:ore" pattern="[0-12]" min=0 max=12 placeholder="Ore"/>
+                            <td> <label class="col-lg-2 control-label">Carti </label></td>
+                            <td><input type="number" class="form-control" data-bind="value:carti ,valueUpdate: 'afterkeydown'" placeholder="Carti"/>
+                                <span data-bind='visible: carti.hasError, text: carti.validationMessage'> </span>
                             </td>
-                            <td>
-                                <label class="col-lg-2 control-label hidden-xs">Minute</label>
-                                <input type="number" class="form-control" data-bind="value:minute" pattern="[0-59]" min=0 max=59 placeholder="Minute"/>
-                            </td>
-                        </tr>
-                        <tr>
-
-                             <td> <label class="col-lg-2 control-label">Partener </label></td>
-                            <td> <input type="text" class="form-control" data-bind="value:partner"/></td>
 
                         </tr>
-                        <tr>
-
-
-                            <td class="hidden-xs"><label class="col-lg-2 control-label">Reviste </label></td>
-                            <td>    <input type="number" class="form-control" data-bind="value:reviste" placeholder="Reviste"/></td>
-                            <td class="hidden-xs"> <label class="col-lg-2 control-label">Brosuri </label></td>
-                            <td>    <input type="number" class="form-control" data-bind="value:brosuri" placeholder="Brosuri"/></td>
-
-                        </tr>
-                          <tr>
-                              <td> <label class="col-lg-2 control-label">Carti </label></td>
-                              <td><input type="number" class="form-control" data-bind="value:carti" placeholder="Carti"/></td>
-
-                          </tr>
                         <tr>
 
                             <td class="hidden-xs"> <label class="col-lg-2 control-label">Visite </label></td>
-                            <td> <input type="number" class="form-control" data-bind="value:visite" placeholder="Visite"/></td>
+                            <td> <input type="number" class="form-control" data-bind="value:visite" placeholder="Visite"/>
+                                <span data-bind='visible: visite.hasError, text: visite.validationMessage'> </span>
+                            </td>
                             <td class="hidden-xs"> <label class="col-lg-2 control-label">Studii</label></td>
-                            <td> <input type="number" class="form-control" data-bind="value:studi" placeholder="Studii"/></td>
+                            <td> <input type="number" class="form-control" data-bind="value:studi" placeholder="Studii"/>
+                                <span data-bind='visible: studi.hasError, text: studi.validationMessage'> </span>
+                            </td>
                         </tr>
 
 

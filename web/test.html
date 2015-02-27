@@ -12,9 +12,20 @@
     }
 </style>
 
+
+
+<input type="text" data-bind="value: name"/>
+<input type="text" data-bind="value: title"/>
+<h1 data-bind="text: nameAndTitle"></h1>
+<input type="text" data-bind="value:nameAndTitle">
+
+
 <input type="text" data-bind="value:Username"/>
 <span  data-bind="text:Username"></span>
-
+<div>First name: <span data-bind="text: newName"></span></div>
+<div>Last name: <span data-bind="text: oldName"></span></div>
+<span  data-bind="text:fullName"></span>
+<div class="heading">Hello, <input data-bind="value:fullName"/></div>
 <p data-bind="css: { error: Books.hasError }">
 <input type="number" min="0" max="10" data-bind='value: Books, valueUpdate: "afterkeydown"' />
 <span data-bind='visible: Books.hasError, text: Books.validationMessage'> </span>
@@ -27,12 +38,87 @@
 </form>
 <div class="container-fluid">
     <form>
-        <div class="form-group" >
-            <label for="books">Books</label>
+
+
+        <div class="form-group has-feedback" data-bind="css:{'has-error':Books.hasError(),'has-success':!Books.hasError()}">
+            <label class="control-label" for="book2s">Books</label>
+
+            <div class="input-group">
+                <span class="input-group-addon">@</span>
+                <input type="text" class="form-control" data-bind='value: Books, valueUpdate: "afterkeydown"'
+                       id="inputGroupSuccess1" aria-describedby="inputGroupSuccess1Status"  >
+                <button type="button" class="btn btn-default" >Tooltip on left</button>
+            </div>
+             <span data-bind='visible: Books.hasError, text: Books.validationMessage'> </span>
+            <!-- ko if: Books.hasError()-->
+            <span class="glyphicon glyphicon-remove form-control-feedback"  data-toggle="tooltip" data-placement="bottom" title="Tooltip on left"></span>
+            <!-- /ko -->
+            <!-- ko if: !Books.hasError()-->
+            <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+            <!-- /ko -->
+            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+        </div>
+
+        <div class="form-group  has-feedback" data-bind="css:{'has-error':Books.hasError(),'has-success':!Books.hasError()}">
+            <label class="control-label" for="book2s" data-bind="attr: {title:Books.message}" data-toggle="tooltip" data-placement="right" >Books</label>
+
+
+            <input type="number" class="form-control" id="books" data-bind='value: Books, valueUpdate: "afterkeydown"' placeholder="Books" >
+            <span data-bind='visible: Books.hasError, text: Books.validationMessage'> </span>
+                     <!-- ko if: Books.hasError()-->
+            <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" ></span>
+            <!-- /ko -->
+            <!-- ko if: !Books.hasError()-->
+            <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+            <!-- /ko -->
+            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+        </div>
+
+
+
+
+
+        <div class="form-group"  data-bind="css: { 'has-error': Books.hasError }">
+            <label class="control-label" for="books">Books</label>
             <p data-bind="css: { error: Books.hasError }">
             <input type="number" class="form-control" id="books" data-bind='value: Books, valueUpdate: "afterkeydown"' placeholder="Books">
             <span data-bind='visible: Books.hasError, text: Books.validationMessage'> </span>
             </p>
+        </div>
+        <div class="form-group  has-feedback"  data-bind="css: { 'has-error': Books.hasError,'has-succes':!Books.hasError }">
+            <label class="control-label" >Input with success</label>
+            <input type="number" class="form-control" id="books2" data-bind='value: Books, valueUpdate: "afterkeydown"' placeholder="Books">
+            <div data-bind="visible:Books.hasError">
+                <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+            </div>
+            <div data-bind="visible:true||!Books.hasError">
+                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+            </div>
+
+
+            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+        </div>
+        <div class="form-group  has-feedback"  data-bind="css: { 'has-error': Books.hasError }">
+            <label class="control-label" >Input with success</label>
+            <input type="number" class="form-control" id="books2" data-bind='value: Books, valueUpdate: "afterkeydown"' placeholder="Books">
+            <div data-bind="visible:Books.hasError">
+                <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+            </div>
+            <div data-bind="visible:true||!Books.hasError">
+                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+            </div>
+
+
+            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+        </div>
+
+
+
+        <div class="form-group has-error has-feedback">
+            <label class="control-label" for="inputError2">Input with error</label>
+            <input type="text" class="form-control" id="inputError2" aria-describedby="inputError2Status">
+            <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+            <span id="inputError2Status" class="sr-only">(error)</span>
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
@@ -43,6 +129,7 @@
             <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
         </div>
         <div class="form-group">
+            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Tooltip on top</button>
             <label for="exampleInputFile">File input</label>
             <input type="file" id="exampleInputFile">
             <p class="help-block">Example block-level help text here.</p>
@@ -62,6 +149,11 @@
 </div>
 
 <span  data-bind="text:Books"></span>
+
+<div>First name: <span data-bind="text: newName"></span></div>
+<div>Last name: <span data-bind="text: oldName"></span></div>
+<div class="heading">Hello, <input data-bind="textInput: fullName"/></div>
+
 
 
 <p data-bind="css: { error: firstName.hasError }">
