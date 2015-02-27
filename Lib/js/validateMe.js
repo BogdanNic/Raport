@@ -12,6 +12,9 @@
  * Time: 1:08 PM
  * To change this template use File | Settings | File Templates.
  */
+$("#result").hide();
+$("#progress").parent().hide();
+//$("#progress").attr("style","width:50%");
 $("#addform").validate({
     rules:{
         name:{
@@ -60,9 +63,26 @@ $("#addform").validate({
         var email=$("#email").val();
         var username=$("#user").val();
         var password=$("#password").val();
+        $("#progress").parent().show();
+        $("#progress").attr("style",'width:10%');
+       // var progress=$("#progress");
+       // progress.fadeIn();
 
         myApp.net.NewUser (name, username, password, email,function(result){
-            debugger;
+            $("#result").fadeIn(500);
+            $("#progress").attr("style",'width:100%');
+            $("#progress").fadeOut(500,function(){
+                $("#progress").parent().hide();
+            });
+       if(!result.error){
+           $("#result").text("Welcome "+username+" !");
+       }else{
+           $("#result").text("Eroro ! "+result.message+" !");
+       }
+
+
+
+           // debugger;
         });
     },
     highlight:function(element,errorClass){
