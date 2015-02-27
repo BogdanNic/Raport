@@ -56,6 +56,50 @@ ko.extenders.numeric = function(target, overrideMessage) {
     //return the original observable
     return target;
 };
+ko.extenders.numeric2 = function(target, options) {
+    //add some sub-observables to our observable
+    target.hasError = ko.observable();
+    target.validationMessage = ko.observable();
+    target.message=options.overrideMessage +options.min+" to " + options.max;
+    //define a function to do validation
+    function validate(newValue) {
+        if(newValue==""){
+            target.hasError(true);
+            target.validationMessage(options.overrideMessage);
+            return target;
+        }else
+        {
+            var n1=parseInt(newValue,10);
+            var n2=Number(newValue);
+            if(isNaN(n1) ||isNaN(n2)) {
+                target.hasError(true);
+                target.validationMessage("This field is numberic");
+                return target;
+            }else{
+                if((n1<options.min) || (n1>options.max) ) {
+                    target.hasError(true);
+                    target.validationMessage("Trebuie sa fie intre  "+options.min+" si "+options.max);
+                    return target;
+
+                }else{
+                    target.hasError(false);
+                    target.validationMessage("all is OK!");
+                    return target;
+                }
+            }
+        }
+
+    }
+
+    //initial validation
+    validate(target());
+
+    //validate whenever the value changes
+    target.subscribe(validate);
+
+    //return the original observable
+    return target;
+};
 ko.bindingHandlers.dateString = {
     update: function(element, valueAccessor, allBindingsAccessor, viewModel) {
         var value = valueAccessor(), allBindings = allBindingsAccessor();

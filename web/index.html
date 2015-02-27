@@ -450,7 +450,7 @@ You can use nearly any combination of these classes to create more dynamic and f
             </div>
             <div class="modal-body">
                 <form class="form-horizontal"  role="form">
-                    <table class="table table-condensed">
+                    <table class="table table-condensed" >
                         <tbody>
                         <tr>
                             <td> <label class="col-lg-2 control-label">Data</label></td>
@@ -463,34 +463,83 @@ You can use nearly any combination of these classes to create more dynamic and f
                         <td class="hidden-xs">
                             <label class="col-lg-2 control-label">Reviste </label>
                         </td>
-                        <td>
-                            <input type="number" class="form-control" data-bind="value:reviste" placeholder="Reviste"/>
-                            <span data-bind='visible: reviste.hasError, text: reviste.validationMessage'> </span>
+                        <td >
+                            <div class="form-group has-feedback" data-bind="css:{'has-error':reviste.hasError(),'has-success':!reviste.hasError()}">
+                                <input type="number" class="form-control" data-bind="value:reviste" placeholder="Reviste"/>
+                                <span data-bind='visible: reviste.hasError, text: reviste.validationMessage'> </span>
+                                <!-- ko if: reviste.hasError()-->
+                                <span class="glyphicon glyphicon-remove form-control-feedback"  data-toggle="tooltip" data-placement="bottom" title="Tooltip on left"></span>
+                                <!-- /ko -->
+                                <!-- ko if: !reviste.hasError()-->
+                                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                                <!-- /ko -->
+                            </div>
+
                         </td>
                         <td class="hidden-xs">
                             <label class="col-lg-2 control-label">Brosuri </label></td>
-                        <td>
-                            <input type="number" class="form-control" data-bind="value:brosuri" placeholder="Brosuri"/>
-                            <span data-bind='visible: brosuri.hasError, text: brosuri.validationMessage'> </span>
+                        <td >
+                            <div class="form-group has-feedback" data-bind="css:{'has-error':brosuri.hasError(),'has-success':!brosuri.hasError()}">
+                                <input type="number" class="form-control" data-bind="value:brosuri" placeholder="Brosuri"/>
+                                <span data-bind='visible: brosuri.hasError, text: brosuri.validationMessage'> </span>
+                                <!-- ko if: brosuri.hasError()-->
+                                <span class="glyphicon glyphicon-remove form-control-feedback"  data-toggle="tooltip" data-placement="bottom" title="Tooltip on left"></span>
+                                <!-- /ko -->
+                                <!-- ko if: !brosuri.hasError()-->
+                                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                                <!-- /ko -->
+                            </div>
+
                         </td>
 
                         </tr>
                         <tr>
-                            <td> <label class="col-lg-2 control-label">Carti </label></td>
-                            <td><input type="number" class="form-control" data-bind="value:carti ,valueUpdate: 'afterkeydown'" placeholder="Carti"/>
-                                <span data-bind='visible: carti.hasError, text: carti.validationMessage'> </span>
-                            </td>
+
+                                <td> <label class="col-lg-2 control-label">Carti </label></td>
+                                <td> <div class="form-group has-feedback" data-bind="css:{'has-error':carti.hasError(),'has-success':!carti.hasError()}">
+                                    <input type="number" class="form-control" data-bind="value:carti ,valueUpdate: 'afterkeydown'" placeholder="Carti"/>
+                                    <span data-bind='visible: carti.hasError, text: carti.validationMessage'> </span>
+                                    <!-- ko if: carti.hasError()-->
+                                    <span class="glyphicon glyphicon-remove form-control-feedback"  data-toggle="tooltip" data-placement="bottom" title="Tooltip on left"></span>
+                                    <!-- /ko -->
+                                    <!-- ko if: !carti.hasError()-->
+                                    <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                                    <!-- /ko -->
+                                    </div>
+                                </td>
+
+
 
                         </tr>
                         <tr>
 
                             <td class="hidden-xs"> <label class="col-lg-2 control-label">Visite </label></td>
-                            <td> <input type="number" class="form-control" data-bind="value:visite" placeholder="Visite"/>
-                                <span data-bind='visible: visite.hasError, text: visite.validationMessage'> </span>
+                            <td>
+                                <div class="form-group has-feedback" data-bind="css:{'has-error':visite.hasError(),'has-success':!visite.hasError()}">
+                                    <input type="number" class="form-control" data-bind="value:visite" placeholder="Visite"/>
+                                    <span data-bind='visible: visite.hasError, text: visite.validationMessage'> </span>
+                                    <!-- ko if: visite.hasError()-->
+                                    <span class="glyphicon glyphicon-remove form-control-feedback"  data-toggle="tooltip" data-placement="bottom" title="Tooltip on left"></span>
+                                    <!-- /ko -->
+                                    <!-- ko if: !visite.hasError()-->
+                                    <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                                    <!-- /ko -->
+                                </div>
+
                             </td>
                             <td class="hidden-xs"> <label class="col-lg-2 control-label">Studii</label></td>
-                            <td> <input type="number" class="form-control" data-bind="value:studi" placeholder="Studii"/>
-                                <span data-bind='visible: studi.hasError, text: studi.validationMessage'> </span>
+                            <td>
+                                <div class="form-group has-feedback" data-bind="css:{'has-error':studi.hasError(),'has-success':!studi.hasError()}">
+                                    <input type="number" class="form-control" data-bind="value:studi" placeholder="Studii"/>
+                                    <span data-bind='visible: studi.hasError, text: studi.validationMessage'> </span>
+                                    <!-- ko if: studi.hasError()-->
+                                    <span class="glyphicon glyphicon-remove form-control-feedback"  data-toggle="tooltip" data-placement="bottom" title="Tooltip on left"></span>
+                                    <!-- /ko -->
+                                    <!-- ko if: !studi.hasError()-->
+                                    <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                                    <!-- /ko -->
+                                </div>
+
                             </td>
                         </tr>
 
