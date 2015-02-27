@@ -54,10 +54,14 @@ $("#addform").validate({
         }
     },
     submitHandler:function(){
-        alert("asd");
+//     alert("asd");
 
-        debugger;
-        myApp.net.NewUser("user1","bo1","boasd@asd","123456",function(result){
+        var name=$("#name").val();
+        var email=$("#email").val();
+        var username=$("#user").val();
+        var password=$("#password").val();
+
+        myApp.net.NewUser (name, username, password, email,function(result){
             debugger;
         });
     },
