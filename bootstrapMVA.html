@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" media="screen" href="Lib/css/cosmo.css">
+    <script src="Lib/js/jquery-1.9.1.js"></script>
+    <script src="Lib/js/bootstrap.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="navbar navbar-default navbar-inverse navbar-fixed-top " role="navigation" >
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">FinalRaport</a>
+        </div>
+        <div class="navbar-collapse collapse navbar-responsive-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#">Chart</a></li>
+                <!--<li class="dropdown navbar-right">-->
+                    <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Logon <b class="caret"></b></a>-->
+                    <!--<ul class="dropdown-menu">-->
+                        <!--<li><a href="#newUserDialog" data-toggle="modal" >New user</a></li>-->
+                        <!--<li class="divider"></li>-->
+                        <!--<li><a href="#">Logout</a></li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+            </ul>
+
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control col-lg-8" placeholder="Email" data-bind="value:User().name" >
+                <input type="password" class="form-control col-lg-8" placeholder="Password" data-bind="value:User().password" >
+                <button type="submit" data-bind="click:LogonUser" class="btn btn-success">Sign in</button>
+                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    New user <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                </ul>
+
+            </form>
+        </div>
+    </div>
+    <div class="navbar navbar-default navbar-inverse navbar-fixed-top hidden" role="navigation" >
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">FinalRaport</a>
+        </div>
+        <div class="navbar-collapse collapse navbar-responsive-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#">Chart</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Logon <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#newUserDialog" data-toggle="modal" >New user</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control col-lg-8" placeholder="Email" data-bind="value:User().name" >
+                <input type="password" class="form-control col-lg-8" placeholder="Password" data-bind="value:User().password" >
+                <button type="submit" data-bind="click:LogonUser" class="btn btn-success">Sign in</button>
+
+
+            </form>
+        </div>
+    </div>
+    <nav class="navbar navbar-default navbar-fixed-top hidden">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Brand</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+                    <li><a href="#">Chart</a></li>
+
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <form class="navbar-form " role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control col-lg-8" placeholder="Email" data-bind="value:User().name" >
+                            <input type="password" class="form-control col-lg-8" placeholder="Password" data-bind="value:User().password" >
+                            <button type="submit" data-bind="click:LogonUser" class="btn btn-success">Sign in</button>
+                            <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-expanded="false">
+                                Action <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu hidden-xs" role="menu">
+                                <li><a href="#">Login</a></li>
+                                <li><a href="#">New user</a></li>
+                                <li><a href="#">Log out</a></li>
+                            </ul>
+                        </div>
+                    </form>
+
+                    <li class="dropdown visible-xs">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Login</a></li>
+                            <li><a href="#">New user</a></li>
+                            <li><a href="#">Log out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+    <div class="navbar navbar-default navbar-inverse navbar-fixed-top hidden" role="navigation" >
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">FinalRaport</a>
+        </div>
+        <div class="navbar-collapse collapse navbar-responsive-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#">Chart</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Logon <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#newUserDialog" data-toggle="modal" >New user</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control col-lg-8" placeholder="Email" data-bind="value:User().name" >
+                <input type="password" class="form-control col-lg-8" placeholder="Password" data-bind="value:User().password" >
+                <button type="submit" data-bind="click:LogonUser" class="btn btn-success">Sign in</button>
+
+
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">List</div>
+        <div class="panel-body">
+            <p><span class=" glyphicon glyphicon-calendar"></span> calendar</p>
+            <p><span class="glyphicon glyphicon-thumbs-up"></span> thumbs</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

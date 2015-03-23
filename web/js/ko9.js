@@ -13,6 +13,25 @@
  * To change this template use File | Settings | File Templates.
  */
 
+ko.bindingHandlers.tooltip = {
+    init: function(element, valueAccessor) {
+        var local = ko.utils.unwrapObservable(valueAccessor()),
+            options = {};
+
+        ko.utils.extend(options, ko.bindingHandlers.tooltip.options);
+        ko.utils.extend(options, local);
+
+        $(element).tooltip(options);
+
+        ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
+            $(element).tooltip("destroy");
+        });
+    },
+    options: {
+        placement: "bottom",
+        trigger: "hover"
+    }
+};
     //ALWAYS  USE ===
 ko.extenders.requireValidation = function(target, options) {
     //add some sub-observables to our observable
@@ -232,7 +251,7 @@ ko.extenders.numericValidation = function(target, options) {
                     return target;
 
                 }else{
-                    debugger;
+                   // debugger;
                     console.log(newValue);
                     target.hasError(true);
                     target.validationMessage("Trebuie sa fie intre  "+options.min+" si "+options.max);

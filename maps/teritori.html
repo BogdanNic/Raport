@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html>
+<head>
+    <title>Teritori</title>
+    <style type="text/css">
+        #map{
+            width: 1700px;
+            height:1000px;
+        }
+        #controls{
+            width:1400px ;
+            height: 100px;
+        }
+
+    </style>
+</head>
+<body>
+<!--<button onclick="run()">PRint</button>-->
+
+<!--<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>-->
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?libraries=geometry&amp;sensor=false"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="bMap.js"></script>
+<div id="controls">
+    <button id="on" onclick="" value="on">Style off</button>
+    <button id="drawLine" onclick="" value="drawLine">draw borders</button>
+    <button id="save">save</button>
+
+
+
+    <button id="load">load</button>
+    <button id="button">ad</button>
+    <button id="addNew">addNew</button>
+    <!--   <textarea id="textCoods">ybhmG__gpCsMgJoEzZwcArp@}f@qEiXcr@{UZaUzDhBhPsKzGyEdJaBj@}H`NaDjAH~NqA~HsEoEkAuCc@kD\uNMyNoGkEhFmIfKqLpFy`@tG}l@zBuSr@_IP~JzG_@Hw@`ItBjFiKvF}M}A`QjC~@rByPpO`GnAh@zC|EfDtFzFs@zPcu@xJ}e@hHcb@
+    </textarea> -->
+    <textarea id="textCoods">i{gmGazfpCsYaOmBzZmZ~Umc@hUkMb@gRoDeHh@}OoW}G}X{UZaUzDhBhPsKzGyEdJaBj@}H`NaDjAH~NqA~HsEoEkAuCc@kD\uNMyNoGkEhFmIfKqLpFy`@tG}l@zBuSr@_IP~JzG_@Hw@`ItBjFiKvF}M}A`QjC~@rByPpO`GnAh@zC|EfDtFzFs@zPcu@xJ}e@hHcb@B{DToD`@aD|I}UTo@</textarea>
+    <p id="textInput2" />
+</div>
+
+<div  id="map"></div>
+
+
+<script type="text/javascript">
+    var     pathLine;
+    //       ybhmG__gpCsMgJoEzZwcArp@}f@qEiXcr@{UZaUzDhBhPsKzGyEdJaBj@}H`NaDjAH~NqA~HsEoEkAuCc@kD\uNMyNoGkEhFmIfKqLpFy`@tG}l@zBuSr@_IP~JzG_@Hw@`ItBjFiKvF}M}A`QjC~@rByPpO`GnAh@zC|EfDtFzFs@zPcu@xJ}e@hHcb@
+
+    $(document).ready(function(){
+
+        $("#on").click(function(){
+            map.setOptions({styles: styles});
+        });
+
+
+        $("#save").click(function(){
+            var arrayList1=[];
+            var textCoord=pathLine.getPath().getArray();
+            /*               for (var i = 0; i < textCoord.length; i++) {
+             var obj = textCoord[i].d+"|"+textCoord[i].e;
+             debugger;
+             arrayList1.push(obj);
+             }*/
+            var textCoord2=pathLine.getPath();
+            var encodedString=google.maps.geometry.encoding.encodePath(textCoord2);
+            $("#textCoods").text(encodedString);
+        });
+
+        $("#load").click(function(){
+            var text=  $("#textCoods").val();
+            debugger;
+            if (pathLine==null){
+                createPathLine();
+            }
+
+            if (text!==""){
+                var path=pathLine.getPath();
+                /* var arrayList=text.split(",");
+                 debugger;
+                 for (var i = 0; i < arrayList.length; i++) {
+                 var obj = arrayList[i].split("|");
+                 path.push(obj);
+                 }*/
+                path.clear();
+                var decodedString=google.maps.geometry.encoding.decodePath(text);
+                // var decodedString =encoding(text);
+                for (var i = 0; i < decodedString.length; i++) {
+                    path.push(decodedString[i]);
+
+                }
+            }
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>
