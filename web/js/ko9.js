@@ -12,14 +12,162 @@
  * Time: 10:12 PM
  * To change this template use File | Settings | File Templates.
  */
+
+    //ALWAYS  USE ===
+ko.extenders.requireValidation = function(target, options) {
+    //add some sub-observables to our observable
+    target.hasError = ko.observable();
+    target.validationMessage = ko.observable();
+    target.message=options.overrideMessage +options.min+" to " + options.max;
+    //define a function to do validation
+    function validate(newValue) {
+        if(newValue === ""){
+            target.hasError(true);
+            target.validationMessage(options.overrideMessage);
+            return target;
+        }else
+        { target.hasError(false);
+            target.validationMessage("all is OK!");
+            return target;
+
+        }
+
+    }
+
+    //initial validation
+    validate(target());
+
+    //validate whenever the value changes
+    target.subscribe(validate);
+
+    //return the original observable
+    return target;
+};
+ko.extenders.lengthValidation = function(target, options) {
+    //add some sub-observables to our observable
+    target.hasError = ko.observable();
+    target.validationMessage = ko.observable();
+    target.message=options.overrideMessage +options.min+" to " + options.max;
+    //define a function to do validation
+    function validate(newValue) {
+      var l= newValue.length;
+        console.log(l);
+    if((l>5) && (l<10)){
+        target.hasError(false);
+        target.validationMessage("all is OK!");
+        }else{
+        target.hasError(true);
+        target.validationMessage("between 5 and  10");
+
+    }
+    }
+
+    //initial validation
+    validate(target());
+
+    //validate whenever the value changes
+    target.subscribe(validate);
+
+    //return the original observable
+    return target;
+};
+ko.extenders.emailString = function(target, options) {
+    //add some sub-observables to our observable
+    target.hasError = ko.observable();
+    target.validationMessage = ko.observable();
+    target.message=options.overrideMessage +options.min+" to " + options.max;
+    //define a function to do validation
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+   myApp.email=re;
+
+   // return re.test(email);
+    function validate(newValue) {
+        if(re.test(newValue)){
+            target.hasError(false);
+            target.validationMessage("all is OK!");
+        }else{
+            target.hasError(true);
+            target.validationMessage("mail");
+
+        }
+    }
+
+    //initial validation
+    validate(target());
+
+    //validate whenever the value changes
+    target.subscribe(validate);
+
+    //return the original observable
+    return target;
+};
+ko.extenders.passwordString = function(target, options) {
+    //add some sub-observables to our observable
+    target.hasError = ko.observable();
+    target.validationMessage = ko.observable();
+    target.message=options.overrideMessage +options.min+" to " + options.max;
+    target.password=target();
+
+    function validate(newValue) {
+        if((newValue!=="") && (newValue.length>5)){
+            target.hasError(false);
+            target.validationMessage("all is OK!");
+            myApp.test=newValue;
+            myApp.newPass=true;
+        }else{
+            target.hasError(true);
+            target.validationMessage("password");
+
+        }
+    }
+
+    //initial validation
+    validate(target());
+
+    //validate whenever the value changes
+    target.subscribe(validate);
+
+    //return the original observable
+    return target;
+};
+ko.extenders.passwordRetypeString = function(target, options) {
+    //add some sub-observables to our observable
+    target.hasError = ko.observable();
+    target.validationMessage = ko.observable();
+    target.message=options.overrideMessage +options.min+" to " + options.max;
+
+
+    function validate(newValue) {
+        console.log(myApp.test);
+        if(newValue === myApp.test){
+            target.hasError(false);
+            target.validationMessage("all is OK!");
+            //myApp.test=newValue;
+        }else{
+            target.hasError(true);
+            target.validationMessage("password don't match");
+
+        }
+    }
+
+    //initial validation
+    validate(target());
+
+    //validate whenever the value changes
+    target.subscribe(validate);
+
+    //return the original observable
+    return target;
+};
 ko.extenders.numeric = function(target, overrideMessage) {
     //add some sub-observables to our observable
     target.hasError = ko.observable();
     target.validationMessage = ko.observable();
-
+ //debugger;
     //define a function to do validation
     function validate(newValue) {
-        if(newValue==""){
+       // debugger;
+        if(newValue ===""){
             target.hasError(true);
             target.validationMessage("Value is 0");
             return target;
@@ -56,14 +204,16 @@ ko.extenders.numeric = function(target, overrideMessage) {
     //return the original observable
     return target;
 };
-ko.extenders.numeric2 = function(target, options) {
+ko.extenders.numericValidation = function(target, options) {
     //add some sub-observables to our observable
     target.hasError = ko.observable();
     target.validationMessage = ko.observable();
     target.message=options.overrideMessage +options.min+" to " + options.max;
     //define a function to do validation
+
+    //ALWAYS  USE ===
     function validate(newValue) {
-        if(newValue==""){
+        if(newValue === ""){
             target.hasError(true);
             target.validationMessage(options.overrideMessage);
             return target;
@@ -73,18 +223,21 @@ ko.extenders.numeric2 = function(target, options) {
             var n2=Number(newValue);
             if(isNaN(n1) ||isNaN(n2)) {
                 target.hasError(true);
-                target.validationMessage("This field is numberic");
+                target.validationMessage("This field is numeric");
                 return target;
             }else{
-                if((n1<options.min) || (n1>options.max) ) {
+                if((n1>=options.min) &&  (n1<options.max) ) {
+                    target.hasError(false);
+                    target.validationMessage("all is OK!");
+                    return target;
+
+                }else{
+                    debugger;
+                    console.log(newValue);
                     target.hasError(true);
                     target.validationMessage("Trebuie sa fie intre  "+options.min+" si "+options.max);
                     return target;
 
-                }else{
-                    target.hasError(false);
-                    target.validationMessage("all is OK!");
-                    return target;
                 }
             }
         }
@@ -105,12 +258,12 @@ ko.bindingHandlers.dateString = {
         var value = valueAccessor(), allBindings = allBindingsAccessor();
         // Next, whether or not the supplied model property is observable, get its current value
         var valueUnwrapped = ko.utils.unwrapObservable(value);
-        var d=valueUnwrapped;
+      //  var d=valueUnwrapped;
         // s=d.getFullYear() ;
         // m=d.getMonth()+1 ;
         // day=d.getDate()  ;
         // var r=s+"-"+m+"-"+day;
-        $(element).text(d.toDateString());
+        $(element).text(valueUnwrapped.toDateString());
     }
 }
 ko.bindingHandlers.numberValueConvert={
@@ -133,7 +286,7 @@ ko.bindingHandlers.numberValueConvert={
           }
 
     }
-}
+};
 ko.bindingHandlers.datePicker={
     init: function(element, valueAccessor, allBindingsAccessor) {
         //initialize datepicker with some optional options
@@ -182,7 +335,7 @@ ko.bindingHandlers.bootstrapModal = {
             controlsDescendantBindings: true
         };
     }
-}
+};
 ko.bindingHandlers.bootstrapModalPrint = {
     init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
         var props = valueAccessor(),
@@ -205,7 +358,30 @@ ko.bindingHandlers.bootstrapModalPrint = {
             controlsDescendantBindings: true
         };
     }
-}
+};
+ko.bindingHandlers.bootstrapModalNewUser = {
+    init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        var props = valueAccessor(),
+            vm = bindingContext.createChildContext(viewModel);
+        ko.utils.extend(vm, props);
+        vm.close = function() {
+            vm.show(false);
+            vm.onClose();
+        };
+        vm.action = function() {
+            vm.onAction();
+        }
+        ko.utils.toggleDomNodeCssClass(element, "modal fade", true);
+        ko.renderTemplate("myModalNewUser", vm, null, element);
+
+        var showHide = ko.computed(function() {
+            $(element).modal(vm.show() ? 'show' : 'hide');
+        });
+        return {
+            controlsDescendantBindings: true
+        };
+    }
+};
 myApp={};
 myApp.isLogin=false;
     myApp.returnDate=function returnDate(date){
@@ -246,7 +422,7 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             xmlhttp.onreadystatechange =function(){
                 if (xmlhttp.readyState==4)
                 {
-                            debugger;
+                            //debugger;
 
                             if(xmlhttp.status === 200 || xmlhttp.status === 201 ){
                                 var d= xmlhttp.responseText;
@@ -296,7 +472,7 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
     var restBase="http://bogdan.w.pw/v1/raportsNew";
    // var restBase="http://bogdan.w.pw/v1/raports"
 
-    var sampleData = 'username=bog&submit=Submit';
+    //var sampleData = 'username=bog&submit=Submit';
     var d;
     //bog qwerty34
     var user = "";
@@ -329,8 +505,9 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
                 user=username;
                 //alert(result.api_key);
                 my.restApi=result.api_key;
-                callback(result);
+
             }
+            callback(result);
         });
 
     };
@@ -339,17 +516,8 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
         var stringToPost = createString({name:name, username:username, password:password, email:email});
         post(stringToPost, restRegister);
         util.send({data:stringToPost,urlLink:restRegister,method:"POST",type:"Register"},function(result){
-            // results=result;
-            debugger;
-            if(result.error===false){
-                //user=username;
-                ////alert(result.api_key);
-                //my.restApi=result.api_key;
-                callback(result);
-            }
-            else{
-                alert(result.message);
-            }
+          callback(result);
+
         });
 
     };
@@ -385,6 +553,7 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
         var stringLastUpdate=dateLastUpdate.getFullYear()+"-"+lastUpdateMonth+"-"+dateLastUpdate.getDate()+" "+dateLastUpdate.getHours()+":"+dateLastUpdate.getMinutes();
         var url="";
         var method="";
+        var data;
         var lastUpdateInt=Math.floor(dateLastUpdate.getTime()/1000);
         var comm=raportCommand.command;
         switch (comm){
@@ -444,34 +613,73 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
 })(myApp);
 //alt down alt up move up down
 (function(myApp){
-    function Modal(header,data,callback,primaryLabel){
+    function Modal(header,data,type,callback,primaryLabel){
         var self=this;
 
         self.header=ko.observable(header);
 
         self.body="sd";
         self.PrintColl=ko.observableArray([]);
-        if(header!=='print'){
+        console.log(type);
+//TODO:add difrent
 
-            self.username=ko.observable(data.Username());
-            self.id=ko.observable(      data.ID());
-            self.ore=ko.observable(     data.Ore());
-            self.minute=ko.observable(  data.Minute());
+        switch (type){
+            case  "newUser":
+                self.NAME=ko.observable("").extend({requireValidation:"numeric",lengthValidation:"jjj"});
+                self.userName=ko.observable("").extend({requireValidation:"numeric",lengthValidation:"jkj"});
+                self.email=ko.observable("").extend({requireValidation:"numeric",emailString:"email"});
+                self.password=ko.observable("").extend({requireValidation:"numeric",lengthValidation:"",passwordString:"kk"});
+                self.password2=ko.observable("").extend({requireValidation:"numeric",lengthValidation:"",passwordRetypeString:""});
+                self.progressModal=ko.observable(10);
+                self.visibleProgress=ko.observable(false);
+                self.resultModal=ko.observable("");
+                break;
+            case "print":
+                self.PrintColl(data);
+                self.printCurrent=ko.observable();
+                self.nameFriend=ko.observable();
+                break;
+            case "edit":
 
-            self.partner=ko.observable( data.Partener());
-            self.visite = ko.observable(data.Visite()).extend({numeric: "numeric"});
-            self.carti=ko.observable(   data.Carti()).extend({numeric:"numeric"});
-            self.reviste=ko.observable( data.Reviste()).extend({numeric:"numeric"});
-            self.studi=ko.observable(   data.Studi()).extend({numeric:"numeric"});
-            self.brosuri=ko.observable( data.Brosuri()).extend({numeric:"numeric"});
-            self.date=ko.observable(                 data.date);
-            self.dateComp=data;
-
-        }else {
-            self.PrintColl(data);
-            self.printCurrent=ko.observable();
-            self.nameFriend=ko.observable();
+                //self.username=ko.observable(data.Username());
+                //self.id=ko.observable(      data.ID());
+                //self.oreM=ko.observable(     data.Ore()).extend({numericValidation: {overrideMessage:"Ore",min:0,max:12}});;
+                //self.minuteM=ko.observable(  data.Minute()).extend({numericValidation: {overrideMessage:"Ore",min:0,max:59}});
+                //console.log(data.Partener());
+                //self.partner=ko.observable( data.Partener()).extend({requireValidation:""});
+                //self.visite = ko.observable(data.Visite()).extend({numericValidation: {overrideMessage:"Visite",min:0,max:12}});
+                //self.carti=ko.observable(   data.Carti()).extend({numericValidation: {overrideMessage:"carti",min:0,max:12}});
+                //self.reviste=ko.observable( data.Reviste()).extend({numericValidation: {overrideMessage:"reviste",min:0,max:12}});
+                //self.studi=ko.observable(   data.Studi()).extend({numericValidation: {overrideMessage:"studii",min:0,max:12}});
+                //self.brosuri=ko.observable( data.Brosuri()).extend({numericValidation: {overrideMessage:"brosuri",min:0,max:12}});
+                //self.date=ko.observable(                 data.date);
+                //self.dateComp=data;break;
+            case "add":
+              //  debugger;
+                self.username=ko.observable(data.Username());
+                self.id=ko.observable(      data.ID());
+                self.oreM=ko.observable(     data.Ore()).extend({numericValidation: {overrideMessage:"Ore",min:0,max:12}});
+                self.minuteM=ko.observable(  0).extend({numericValidation: {overrideMessage:"Minute",min:0,max:59}});
+                console.log(data.Partener());
+                self.partner=ko.observable( data.Partener()).extend({requireValidation:"jjj"});
+                self.reviste=ko.observable( data.Reviste()).extend({numericValidation: {overrideMessage:"reviste",min:0,max:40}});
+                self.brosuri=ko.observable( data.Brosuri()).extend({numericValidation: {overrideMessage:"brosuri",min:0,max:100}});
+                self.carti=ko.observable(   data.Carti()).extend({numericValidation: {overrideMessage:"carti",min:0,max:20}});
+                self.visite = ko.observable(data.Visite()).extend({numericValidation: {overrideMessage:"Visite",min:0,max:30}});
+                self.studi=ko.observable(   data.Studi()).extend({numericValidation: {overrideMessage:"studii",min:0,max:20}});
+                self.date=ko.observable(                 data.date);
+                self.dateComp=data;break;
         }
+        //if(type!=="print"){
+        //
+        //
+        //
+        //}else {
+        //    self.PrintColl(data);
+        //    self.printCurrent=ko.observable();
+        //    self.nameFriend=ko.observable();
+        //}
+
         self.closeLabel="Close";
         self.show= ko.observable(false);
         self.primaryLabel=primaryLabel;
@@ -482,16 +690,19 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
         };
         self. onAction= function() {
             // self.onModalAction();
-            self.show(false);
-            if(header==="print"){
-                callback(self.printCurrent);
-            }   else{
 
 
-                callback(new myApp.Raport({
+            switch (type){
+                case "print":
+                    self.show(false);
+                    callback(self.printCurrent);
+
+                    break;
+                case "add":
+                case "edit":callback(new myApp.Raport({
                         id:self.id(),
-                        ore:returnNumber(self.ore()),
-                        minute:returnNumber(self.minute()),
+                        ore:returnNumber(self.oreM()),
+                        minute:returnNumber(self.minuteM()),
                         username:self.username(),
                         partener:returnString(self.partner()),
                         carti:returnNumber(self.carti()),
@@ -500,10 +711,67 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
                         visite:returnNumber(self.visite()),
                         studi:returnNumber(self.studi())},
                     self.date()));
+                    self.show(false);
+                    break;
+                case  "newUser":
+                    var name,username,password,email,password2;
+                    name=self.NAME();
+                    email=self.email();
+                    username=self.userName();
+                    password=self.password();
+                    password2=self.password2();
 
-            };
+
+
+
+                    if(name.length>5 && name!==""){
+                      if(username.length>5 && username!==""){
+                          if(myApp.email.test(email)){
+                              if(password === password2 && password.length>5){
+                                 // alert("ok");
+                                 self.visibleProgress(true);
+                                myApp.net.NewUser (name, username, password, email,function(result) {
+                                    self.progressModal(100);
+                                    var message="";
+                                    callback(result);
+                                    if(result.error===false){
+                                       message="you are successful create new user";
+                                    }else{
+                                        message=result.message;
+                                    }
+                                    //delay closing
+                                    setTimeout(function (){
+                                        self.show(false);
+
+                                    }, 1000);
+                                    self.resultModal(message);
+
+
+
+                                });
+
+                                  break;
+                              }else{
+                                  alert("password must match");
+                              }
+                          }else{
+                              alert("email must be set!");
+                          }
+                      }else{
+                          alert("username must be 5 characters long");
+                      //return;
+                      }
+                    }else{
+                        alert("name must be 5 characters long");
+                    }
+
+
+
+
+            }
+
         }
-    };
+    }
     function returnNumber(numberText){
         var number=0;
         if(numberText===""){
@@ -687,6 +955,8 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
     function User(name,password){
         this.name=ko.observable(name);
         this.password=ko.observable(password);
+        this.email=ko.observable("");
+        this.username=ko.observable("");
     }
     myApp.User=User;
 }(myApp));
@@ -795,20 +1065,31 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
         var framework=new myApp.BogFramework();
         self.User=ko.observable(new myApp.User("",""));
         var USERNAME="";
-        var rapCur=new myApp.Raport({Username:"boggfd",Ore:1,Minute:0,Partener:"vlad",Reviste:2,Visite:3,Carti:4,Studi:5,Brosuri:9, Month:"2001-2-2 12:12"},new Date());
-        var rapNew=new myApp.Raport({username:"boggfd",ore:1,minute:0,partener:"",reviste:0,visite:0,carti:0,studi:0,brosuri:0, month:"2001-2-2 12:12"},new Date());
-        var printNew=new myApp.Raport({Username:"boggfd",Ore:1,Minute:0,Partener:"",Reviste:0,Visite:0,Carti:0,Studi:0,Brosuri:0, Month:"2001-2-2 12:12"},new Date());
+        var rapCur=new myApp.Raport({Username:"boggfd",Ore:1,Minute:0,partener:"vlad",Reviste:2,Visite:3,Carti:4,Studi:5,Brosuri:9, Month:"2001-2-2 12:12"},new Date());
+        var rapNew=new myApp.Raport({username:"boggfd",ore:1,minute:0,partener:"ss",reviste:0,visite:0,carti:0,studi:0,brosuri:0, Month:"2001-2-2 12:12"},new Date());
+        var printNew=new myApp.Raport({Username:"boggfd",Ore:1,Minute:0,Partener:"ss",Reviste:0,Visite:0,Carti:0,Studi:0,Brosuri:0,Month:"2001-2-2 12:12"},new Date());
+        //var userNew=new myApp.User("bog","nic");
+        var userNew=new myApp.User("user","password");
 
-        self.editModal=new myApp.Modal("Edit your raport",rapCur,SaveEdit,"save edit");
-        self.addRaport=new myApp.Modal("Add your raport",rapNew,SaveNewAdd,"add new");
-        self.printRaport=new myApp.Modal("print",printNew,printRaportCommmand,"print");
-
-
+        self.messageResult=ko.observable("Your result");
+        self.hideMessage=ko.observable(true);
+        self.dangerAlert=ko.observable(false);
+        self.successAlert=ko.observable(false);
         self.showProgress=ko.observable(false);
         self.progress=ko.observable(70);
         self.ProgressComputed=ko.computed(function(){
             return   self.progress()+"%";
         });
+
+
+
+
+        self.editModal=new myApp.Modal("Edit your raport",rapCur,"edit",SaveEdit,"save edit");
+        self.addRaport=new myApp.Modal("Add your raport",rapNew,"add",SaveNewAdd,"add new");
+        self.printRaport=new myApp.Modal("print",printNew,"print", printRaportCommmand,"print");
+        self.newUserModal=new myApp.Modal("New user",userNew,"newUser", addNewUserCommand,"add new");
+
+
         framework.RefreshTrue.subscribe(function(progrees){
 
 
@@ -819,6 +1100,64 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             }
         });
         self.selected=ko.observable();
+
+        self.LogonUser=function(){
+           // var listNew=[];
+            parse.name="alex";
+            var d=parse.name;
+            //parse.login("marco2","123456",function(parseRes){
+            //   // debugger;
+            //    //ok;
+            //    var d=parseRes;
+            //});
+            self.progress(20);
+            self.showProgress(true);
+            net.Login(self.User().name(),self.User().password(),function(result){
+                console.log(result);
+                self.progress(100);
+                setTimeout(function(){
+                    self.showProgress(false);
+                },2000);
+                if(result.error===false){
+                    setDanger(false);
+                    self.messageResult("welcome "+self.User().name());
+                    // GetMonthsYaer(result.Raports, listNew);
+                    loadReports();
+                }else{
+                    setDanger(true);
+                    self.messageResult(result.message);
+                }
+
+            });
+        };
+        self.registerUser=function(){
+            self.newUserModal.show(true);
+        };
+        function addNewUserCommand(result){
+            if(result.error === false){
+                setDanger(false);
+                self.messageResult("welcome "+self.newUserModal.username());
+            }else{
+                setDanger(true);
+                self.messageResult(result.message);
+            }
+
+        };
+        function setDanger(isTrue){
+            self.hideMessage(false);
+            if(isTrue){
+                self.successAlert(false);
+                self.dangerAlert(true);
+            }else{
+                self.successAlert(true);
+                self.dangerAlert(false);
+            }
+        }
+
+
+
+
+
         self.PrintRaport=function(){
             var currentMonth=dateNow.getMonth(),
                 currentYear=dateNow.getFullYear();
@@ -826,7 +1165,8 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             self.printCurrentMonth(new myApp.MonthView(myApp.monthNames[1]));
             self.printRaport.PrintColl(self.raportsCollection()[parseInt(year)].listView());
             self.printRaport.show(true);
-        }
+        };
+
         function printRaportCommmand(printCurrent){
 
             // alert(printCurrent().luna);
@@ -840,32 +1180,8 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             newPage.print();
             //window.print();
         }
-        self.LogonUser=function(){
-            var listNew=[];
-            parse.name="alex";
-            var d=parse.name;
-            parse.login("marco2","123456",function(parseRes){
-                debugger;
-                //ok;
-                var d=parseRes;
-            });
-            net.Login(self.User().name(),self.User().password(),function(result){
-                console.log(result);
-                if(result.error===false){
 
-                   // GetMonthsYaer(result.Raports, listNew);
-                    loadReports();
-                }
 
-            });
-        };
-        self.registerUser=function(){
-            debugger;
-          net.NewUser("name", "username", "password","email",function(result){
-              debugger;
-
-          });
-        };
 
         function GetMonthsYaer(r, listNew) {
             for (var i = 0; i < r.length; i++) {
@@ -1001,11 +1317,12 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
 
         self.EditRaport=function(rap){
 
+            debugger;
             self. selectedRaport(rap) ;
 
             self.editModal.id(rap.ID());
-            self.editModal.ore(rap.Ore());
-            self.editModal.minute(rap.Minute());
+            self.editModal.oreM(rap.Ore());
+            self.editModal.minuteM(0);
             self.editModal.partner(rap.Partener());
             self.editModal.username(rap.Username());
             self.editModal.reviste(rap.Reviste());
@@ -1061,14 +1378,14 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
 
         self.addNewRaport=function(){
             self.addRaport.id(222);
-            self.addRaport.ore("");
+            self.addRaport.oreM(1);
             self.addRaport.partner("singur");
             self.addRaport.username(USERNAME);
             self.addRaport.reviste("");
             self.addRaport.studi("");
             self.addRaport.carti("");
             self.addRaport.visite("");
-            self.addRaport.minute("");
+            self.addRaport.minuteM("");
             self.addRaport.brosuri("");
             self.addRaport.date(new Date());
             self.addRaport.show(true);
