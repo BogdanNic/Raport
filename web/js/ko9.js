@@ -462,11 +462,14 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
                                         callback.call(my2,{result:true,Raports:ds});
                                         break;
                                     case "Command":
-                                        if(ds.error===false){
-                                            callback.call(my2,true);
-                                        }else{
-                                            callback.call(my2,false);
-                                        }
+
+                                        callback.call(my2,ds);
+                                       //old
+                                        //if(ds.error===false){
+                                        //    callback.call(my2,true);
+                                        //}else{
+                                        //    callback.call(my2,false);
+                                        //}
                                         break;
                                 }
 
@@ -816,10 +819,11 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
 }(myApp));
 
 (function(myApp){
-    function RaportCommand(item,command,lastUpdate)   {
+    function RaportCommand(item,command,lastUpdate,raport)   {
         this.luna=item;
         this.command=command;
         this.lastUpdate=lastUpdate;
+        this.raportCurrent=raport;
     }
     myApp.RaportCommand=RaportCommand;
 }(myApp));
@@ -919,6 +923,13 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
                 }
             }
             return array2;
+        }
+        this.execute2=function(item,command){
+            var raportCommand=new myApp.RaportCommand(item,"INSERT",new Date());
+            net.postRaportCommand(raportCommand,function(result){
+                debugger;
+                item.ID(result.raport_id);
+            });
         }
         this.execute1=function(){
             var arrayLength=self.listChanges().length;
@@ -1263,7 +1274,8 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             //self.listChanges.push(person);
             framework.insert(person);
             refresh();
-
+            framework.execute2(person);
+           // self.SaveToDatabase();
         }
         function SaveEdit(person){
             //  alert("SaveEdit");
@@ -1289,7 +1301,7 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             self.raportsCollection()[parseInt(year)].listView()[montc].list.push(person);
             framework.update(person);
             refresh();
-
+            self.SaveToDatabase();
         }
         self.onModalClose = function(rest) {
             alert("CLOSE!+rest");
@@ -1341,7 +1353,7 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
 
             self.editModal.id(rap.ID());
             self.editModal.oreM(rap.Ore());
-            self.editModal.minuteM(0);
+            self.editModal.minuteM(rap.Minute());
             self.editModal.partner(rap.Partener());
             self.editModal.username(rap.Username());
             self.editModal.reviste(rap.Reviste());
@@ -1437,6 +1449,7 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             self.raportsCollection()[parseInt(year)].listView()[c].list.remove(rap);
             framework.delete(rap);
             refresh();
+            self.SaveToDatabase();
         };
     }
     myApp.RaportsViewModel= RaportsViewModel;
