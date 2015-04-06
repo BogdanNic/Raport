@@ -924,11 +924,25 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             }
             return array2;
         }
-        this.execute2=function(item,command){
-            var raportCommand=new myApp.RaportCommand(item,"INSERT",new Date());
+        this.executeNow=function(item,command){
+            self.RefreshTrue(10);
+            var raportCommand=new myApp.RaportCommand(item,command,new Date());
             net.postRaportCommand(raportCommand,function(result){
-                debugger;
-                item.ID(result.raport_id);
+               if(result.error!==true){
+                   self.RefreshTrue(50);
+                   debugger;
+                   switch (command){
+
+                       case "INSERT": item.ID(result.raport_id);
+                           break;
+                       case "UPDATE":break;
+                       case "DELETE":break;
+                   }
+               }else{
+                   return false;
+               }
+
+
             });
         }
         this.execute1=function(){
@@ -1272,10 +1286,13 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             self.raportsCollection()[parseInt(year2)].listView()[montc].list.push(person);
             console.log(person.Ore(),person.Username());
             //self.listChanges.push(person);
-            framework.insert(person);
-            refresh();
-            framework.execute2(person);
-           // self.SaveToDatabase();
+
+
+           var isSend= framework.executeNow(person,"INSERT");
+            if(isSend){
+                framework.insert(person);
+            }
+
         }
         function SaveEdit(person){
             //  alert("SaveEdit");
@@ -1299,9 +1316,10 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             var ore=person.Ore;
             //self.raportsCollection()[parseInt(year)].listView()[montc].list.push(new myApp.Raport({Ore:ore,Minute:person.Minute,Reviste:person.Reviste},person.date));
             self.raportsCollection()[parseInt(year)].listView()[montc].list.push(person);
-            framework.update(person);
-            refresh();
-            self.SaveToDatabase();
+           var isSend= framework.executeNow(person,"UPDATE");
+            if(isSend){
+                framework.update(person);
+            }
         }
         self.onModalClose = function(rest) {
             alert("CLOSE!+rest");
@@ -1447,9 +1465,11 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             self.selectedRaport(null);
 
             self.raportsCollection()[parseInt(year)].listView()[c].list.remove(rap);
-            framework.delete(rap);
-            refresh();
-            self.SaveToDatabase();
+
+           var isSend=framework.executeNow(rap,"DELETE");
+            if(isSend){
+                framework.delete(rap);
+            }
         };
     }
     myApp.RaportsViewModel= RaportsViewModel;
