@@ -32,6 +32,8 @@
     <button id="load">load</button>
     <button id="button">ad</button>
     <button id="addNew">addNew</button>
+
+    <button id="blocuri">view 3d Streat</button>
     <!--   <textarea id="textCoods">ybhmG__gpCsMgJoEzZwcArp@}f@qEiXcr@{UZaUzDhBhPsKzGyEdJaBj@}H`NaDjAH~NqA~HsEoEkAuCc@kD\uNMyNoGkEhFmIfKqLpFy`@tG}l@zBuSr@_IP~JzG_@Hw@`ItBjFiKvF}M}A`QjC~@rByPpO`GnAh@zC|EfDtFzFs@zPcu@xJ}e@hHcb@
     </textarea> -->
     <textarea id="textCoods">i{gmGazfpCsYaOmBzZmZ~Umc@hUkMb@gRoDeHh@}OoW}G}X{UZaUzDhBhPsKzGyEdJaBj@}H`NaDjAH~NqA~HsEoEkAuCc@kD\uNMyNoGkEhFmIfKqLpFy`@tG}l@zBuSr@_IP~JzG_@Hw@`ItBjFiKvF}M}A`QjC~@rByPpO`GnAh@zC|EfDtFzFs@zPcu@xJ}e@hHcb@B{DToD`@aD|I}UTo@</textarea>
@@ -51,7 +53,21 @@
             map.setOptions({styles: styles});
         });
 
+        $("#blocuri").click(function(){
 
+            var mapOptions = {
+                zoom: 16,
+                //center: new google.maps.LatLng(44.32476, 23.813470),
+                center: new google.maps.LatLng(44.31649454929054,23.80039930343628),
+                //mapTypeId:google.maps.MapTypeId.ROADMAP,
+                mapTypeId:google.maps.MapTypeId.HYBRID,
+                disableDefaultUI: true,
+                scrollwheel:true
+
+            };
+           // map.setOptions(mapOptions);
+            map.setMapTypeId(google.maps.MapTypeId.HYBRID);
+        });
         $("#save").click(function(){
             var arrayList1=[];
             var textCoord=pathLine.getPath().getArray();

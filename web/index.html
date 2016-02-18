@@ -223,9 +223,8 @@
                         <span data-bind="text:Partener"></span>
                         <span data-bind="text:Ore()+':'+Minute()"></span>
                         <!--<span data-bind="text:Minute"  ></span>-->
-                        <span data-bind="text:Reviste"></span>
-                        <span data-bind="text:Brosuri"></span>
-                        <span data-bind="text:Carti"></span>
+                        <span data-bind="text:Materiale"></span>
+                        <span data-bind="text:Vizualizari"></span>
                         <span data-bind="text:Visite"></span>
                         <span data-bind="text:Studi"></span>
 
@@ -258,12 +257,10 @@
                     <div class="well well-sm">
                         <span>Ore </span>
                         <span class="badge succes" data-bind="text:SumOre"></span>
-                        <span>Reviste</span>
-                        <span class="badge succes" data-bind="text:SumReviste">  </span>
-                        <span>Brosuri</span>
-                        <span class="badge succes" data-bind="text:SumBrosuri"> </span>
-                        <span>Carti</span>
-                        <span class="badge succes" data-bind="text:SumCarti">  </span>
+                        <span>Materiale</span>
+                        <span class="badge succes" data-bind="text:SumMateriale">  </span>
+                        <span>Vizualizari</span>
+                        <span class="badge succes" data-bind="text:SumVizualizari"> </span>
                         <span> Visite </span>
                         <span class="badge succes" data-bind="text:SumVisite"></span>
                     </div>
@@ -295,9 +292,9 @@
                                     </div>
                                     <div class="col-xs-12 col-md-6 col-md-pull-3">
 
-                                        <span> </span> <span> Reviste:</span> <span data-bind="text:SumReviste"></span>
-                                        <span> </span> <span> Brosuri:</span> <span data-bind="text:SumBrosuri"></span>
-                                        <span> </span><span> Carti:</span> <span data-bind="text:SumCarti"></span>
+                                        <span> </span> <span> Materiale:</span> <span data-bind="text:SumMateriale"></span>
+                                        <span> </span> <span> Vizualizari:</span> <span data-bind="text:SumVizualizari"></span>
+
                                         <span> </span><span> Visite:</span> <span data-bind="text:SumVisite"></span>
 
                                         <i class="icon-book"></i>
@@ -318,9 +315,9 @@
                                             <th>Time</th>
                                             <!--<th>O</th>-->
                                             <!--<th>M</th>-->
-                                            <th>R</th>
-                                            <th>B</th>
-                                            <th>C</th>
+                                            <th>M</th>
+                                            <th>V</th>
+
                                             <th>V</th>
                                             <th>S</th>
 
@@ -338,9 +335,9 @@
                                             <td><span data-bind="text:Ore()+':'+Minute()"></span></td>
                                             <!--<td data-bind="text:Ore"     ></td>-->
                                             <!--<td data-bind="text:Minute"  ></td>-->
-                                            <td data-bind="text:Reviste"></td>
-                                            <td data-bind="text:Brosuri"></td>
-                                            <td data-bind="text:Carti"></td>
+                                            <td data-bind="text:Materiale"></td>
+                                            <td data-bind="text:Vizualizari"></td>
+
                                             <td data-bind="text:Visite"></td>
                                             <td data-bind="text:Studi"></td>
 
@@ -407,10 +404,10 @@
                                     <thead>
                                     <tr>
                                         <th>Data</th>
-                                        <th>Carti</th>
-                                        <th>Brosuri</th>
+
+                                        <th>Vizualizari</th>
                                         <th colspan="2">Ore</th>
-                                        <th>Reviste</th>
+                                        <th>Materiale</th>
                                         <th>Vizite</th>
                                         <th>Studii</th>
 
@@ -419,11 +416,11 @@
                                     <tbody data-bind="foreach:printCurrent().list">
                                     <tr>
                                         <td><span data-bind="dateString:date"></span></td>
-                                        <td data-bind="text:Carti"></td>
-                                        <td data-bind="text:Brosuri"></td>
+
+                                        <td data-bind="text:Vizualizari"></td>
                                         <td data-bind="text:Ore"></td>
                                         <td data-bind="text:Minute"></td>
-                                        <td data-bind="text:Reviste"></td>
+                                        <td data-bind="text:Materiale"></td>
                                         <td data-bind="text:Visite"></td>
                                         <td data-bind="text:Studi"></td>
                                     </tr>
@@ -432,7 +429,7 @@
                                     <tr>
                                         <th colspan="4">Total</th>
                                         <th data-bind="text:printCurrent().SumOre"></th>
-                                        <th data-bind="text:printCurrent().SumReviste"></th>
+                                        <th data-bind="text:printCurrent().SumMateriale"></th>
                                     </tr>
                                     </tfoot>
                                 </table>
@@ -539,19 +536,19 @@
                             </tr>
                             <tr>
                                 <td class="hidden-xs">
-                                    <label class="col-lg-2 control-label">Reviste </label>
+                                    <label class="col-lg-2 control-label">Materiale </label>
                                 </td>
                                 <td>
                                     <div class="form-group has-feedback"
-                                         data-bind="css:{'has-error':reviste.hasError(),'has-success':!reviste.hasError()}">
+                                         data-bind="css:{'has-error':materiale.hasError(),'has-success':!materiale.hasError()}">
                                         <input type="number" class="form-control"
-                                               data-bind="value:reviste, valueUpdate: 'afterkeydown',tooltip:{title:reviste.validationMessage}"
-                                               min="0" max="40" placeholder="reviste"/>
-                                        <!--<span data-bind='visible: reviste.hasError, text: reviste.validationMessage'> </span>-->
-                                        <!-- ko if: reviste.hasError()-->
+                                               data-bind="value:materiale, valueUpdate: 'afterkeydown',tooltip:{title:materiale.validationMessage}"
+                                               min="0" max="40" placeholder="materiale"/>
+                                        <!--<span data-bind='visible: materiale.hasError, text: materiale.validationMessage'> </span>-->
+                                        <!-- ko if: materiale.hasError()-->
                                         <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                                         <!-- /ko -->
-                                        <!-- ko if: !reviste.hasError()-->
+                                        <!-- ko if: !materiale.hasError()-->
                                         <span class="glyphicon glyphicon-ok form-control-feedback"
                                               aria-hidden="true"></span>
                                         <!-- /ko -->
@@ -559,18 +556,18 @@
 
                                 </td>
                                 <td class="hidden-xs">
-                                    <label class="col-lg-2 control-label">Brosuri </label></td>
+                                    <label class="col-lg-2 control-label">Vizualizari </label></td>
                                 <td>
                                     <div class="form-group has-feedback"
-                                         data-bind="css:{'has-error':brosuri.hasError(),'has-success':!brosuri.hasError()}">
+                                         data-bind="css:{'has-error':vizualizari.hasError(),'has-success':!vizualizari.hasError()}">
                                         <input type="number" class="form-control"
-                                               data-bind="value:brosuri, valueUpdate: 'afterkeydown',tooltip:{title:brosuri.validationMessage}"
-                                               min="0" max="100" placeholder="Brosuri"/>
-                                        <!--<span data-bind='visible: brosuri.hasError, text: brosuri.validationMessage'> </span>-->
-                                        <!-- ko if: brosuri.hasError()-->
+                                               data-bind="value:vizualizari, valueUpdate: 'afterkeydown',tooltip:{title:vizualizari.validationMessage}"
+                                               min="0" max="100" placeholder="Vizualizari"/>
+                                        <!--<span data-bind='visible: vizualizari.hasError, text: vizualizari.validationMessage'> </span>-->
+                                        <!-- ko if: vizualizari.hasError()-->
                                         <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                                         <!-- /ko -->
-                                        <!-- ko if: !brosuri.hasError()-->
+                                        <!-- ko if: !vizualizari.hasError()-->
                                         <span class="glyphicon glyphicon-ok form-control-feedback"
                                               aria-hidden="true"></span>
                                         <!-- /ko -->
@@ -579,26 +576,7 @@
                                 </td>
 
                             </tr>
-                            <tr>
-                                <td><label class="col-lg-2 control-label">Carti </label></td>
-                                <td>
-                                    <div class="form-group has-feedback"
-                                         data-bind="css:{'has-error':carti.hasError(),'has-success':!carti.hasError()}">
-                                        <input type="number" class="form-control"
-                                               data-bind="value:carti ,valueUpdate: 'afterkeydown',tooltip:{title:carti.validationMessage}"
-                                               min="0" max="20" placeholder="Carti"/>
-                                        <!--<span data-bind='visible: carti.hasError, text: carti.validationMessage'> </span>-->
-                                        <!-- ko if: carti.hasError()-->
-                                        <span class="glyphicon glyphicon-remove form-control-feedback"></span>
-                                        <!-- /ko -->
-                                        <!-- ko if: !carti.hasError()-->
-                                        <span class="glyphicon glyphicon-ok form-control-feedback"
-                                              aria-hidden="true"></span>
-                                        <!-- /ko -->
-                                    </div>
-                                </td>
-                                <td><span></span></td>
-                            </tr>
+
                             <tr>
 
                                 <td class="hidden-xs"><label class="col-lg-2 control-label">Visite </label></td>

@@ -3,19 +3,125 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+    <script src="../Lib/js/kn230.js"></script>
+    <script>
+        ko.bindingHandlers.beforeUnloadText = {
+            init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
+                if (window.onbeforeunload == null) {
+                    window.onbeforeunload = function(){
+                        var value = valueAccessor();
+                        var promptText = ko.utils.unwrapObservable(value);
+                        if (typeof promptText == "undefined" || promptText == null) {
+                            // Return nothing.  This will cause the prompt not to appear
+                        } else {
+                            if (promptText != null && typeof promptText != "string") {
+                                var err = "Error: beforeUnloadText binding must be " +
+                                        "against a string or string observable.  " +
+                                        "Binding was done against a " + typeof promptText;
+                                console.log(err);
+                                console.log(promptText);
+                                // By returning the error string, it will display in the
+                                // onbeforeunload dialog box to the user.  We could throw an
+                                // exception here, but the page would unload and the
+                                // exception would be lost.
+                                return err;
+                            }
+                            return promptText;
+                        }
+                    };
+
+                } else {
+                    var err = "onbeforeupload has already been set";
+                    throw new Error(err);
+                }
+            }
+        };
+    </script>
 </head>
-<body>
+<script src="../Lib/js/jquery-1.9.1.js"></script>
+<body data-bind="beforeUnloadText:'Need to save '">
 
 <input type="text" data-bind="value: name"/>
 <input type="text" data-bind="value: title"/>
 <h1 data-bind="text: nameAndTitle"></h1>
+<button data-bind="click:clickAdd">add</button>
 
-<script src="../Lib/js/kn230.js"></script>
 <script>
+
+//    $(window).on("beforeunload", function() {
+//        preventBubble();
+//        alert("ASd");
+//        return  "Do you really want to close?" ;
+//    })
+//    window.onbeforeunload=function(){
+//        debugger;
+//        alert("ASD");
+//    }
+var my2={};
+    my2.send=function(obj,callback){
+
+
+        try{
+            var xmlhttp=new XMLHttpRequest();
+
+            xmlhttp.open(obj.method,obj.urlLink,true);
+            xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+            xmlhttp.setRequestHeader("Authorization",obj.authToken);
+            xmlhttp.send(obj.data);
+        }catch (ex){
+
+            debugger;
+        }
+
+
+            xmlhttp.onreadystatechange =function(){
+            if (xmlhttp.readyState==4)
+            {
+                if(xmlhttp.status === 200 || xmlhttp.status === 201 ){
+                    var d= xmlhttp.responseText;
+                    var ds=JSON.parse(d);
+                    switch(obj.type){
+
+                        case "Register":
+                            //debugger;
+
+                            callback.call(my2,ds);
+                            break;
+                        case "Login":
+                            callback.call(my2,ds);
+                            break;
+                        case "GetRaports":
+                            // localStorage.setItem("data",ds);
+                            //localStorage.setItem("isModified","false");
+                            callback.call(my2,{result:true,Raports:ds});
+                            break;
+                        case "Command":
+
+                            callback.call(my2,ds);
+                            //old
+                            //if(ds.error===false){
+                            //    callback.call(my2,true);
+                            //}else{
+                            //    callback.call(my2,false);
+                            //}
+                            break;
+                    }
+
+                }
+            }
+        }
+        xmlhttp.onerror=function(er){
+           debugger;
+            callback.call(my2,{error:true,message:"server not found"});
+        }
+
+
+    };
+
 
     var ViewModel = function(){
         var self = this;
-        self.name = ko.observable("Buffy");
+        self.name = ko.observable("bog");
         self.title = ko.observable("The Vampire Slayer");
         self.nameAndTitle = ko.computed({
             read: function(){ return self.name() + ", " + self.title();},
@@ -25,6 +131,20 @@
                 self.title(nameAndTitle[1]);
             }
         });
+        self.onClose=function(){
+           debugger;
+            alert("Adsas");
+        }
+        self.clickAdd=function(){
+
+
+
+          my2.send({method:"GET",urlLink:"http://bogdannic.esy.es/web",data:"bog",type:"Command"},function(result){
+              if(result.error===true){
+                  alert(result.message);
+              }
+            });
+        };
 
     };
 

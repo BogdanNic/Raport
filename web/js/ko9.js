@@ -477,7 +477,7 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
                 }
             }
             xmlhttp.onerror=function(er){
-                   debugger;
+                   callback.call(my2,{error:true,message:"server not found"});
             }
 
         };
@@ -491,9 +491,9 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
     var authToken = "0381bf51b21cf0e83536f9c662a0a371";
     var restLogin="http://bogdan.w.pw/v1/login";
     var restRegister="http://bogdan.w.pw/v1/register";
-    var restBase="http://bogdan.w.pw/v1/raportsNew";
+    //var restBase="http://bogdan.w.pw/v1/raportsNew";
    // var restBase="http://bogdan.w.pw/v1/raports"
-
+    var restBase="http://bogdan.w.pw/v1/raports2";
     //var sampleData = 'username=bog&submit=Submit';
     var d;
     //bog qwerty34
@@ -569,11 +569,12 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
         var month=ra.Month();
         //var date2=new Date(month);
         var month2=ra.date.getMonth()+1;
-        var stringDate=ra.date.getFullYear()+"-"+month2+"-"+ra.date.getDate();
+        var stringDate=ra.date.getFullYear()+"-"+month2+"-"+ra.date.getDate()+" "+ra.date.getHours()+":"+ra.date.getMinutes()+":"+ra.date.getSeconds();
         var dateLastUpdate=raportCommand.lastUpdate;
         var lastUpdateMonth=dateLastUpdate.getMonth()+1;
         var stringLastUpdate=dateLastUpdate.getFullYear()+"-"+lastUpdateMonth+"-"+dateLastUpdate.getDate()+" "+dateLastUpdate.getHours()+":"+dateLastUpdate.getMinutes();
         var url="";
+
         var method="";
         var data;
         var lastUpdateInt=Math.floor(dateLastUpdate.getTime()/1000);
@@ -586,22 +587,22 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
                 url=restBase+"/"+ra.ID()+"?lastUpdate="+lastUpdateInt+endSubmit;
                 break;
             case "INSERT":
-                data="user="+ra.Username()+"&"+"month="+stringDate+"&ore="+ra.Ore()+"&minute="+ra.Minute()+"&reviste="
-                    +ra.Reviste()+"&brosuri="+ra.Brosuri()+"&carti="+ra.Carti()+"&studi="+ra.Studi()+"&visite="+
+                data="user="+ra.Username()+"&"+"month="+stringDate+"&ore="+ra.Ore()+"&minute="+ra.Minute()+"&materiale="
+                    +ra.Materiale()+"&vizualizari="+ra.Vizualizari()+"&studi="+ra.Studi()+"&visite="+
                     ra.Visite()+"&partener="+ra.Partener()+"&"+"lastUpdate="+lastUpdateInt+endSubmit;
                 method="POST";
                 url= restBase;
                 break;
             case "UPDATE":
-                data="id="+ra.ID()+"&"+"month="+stringDate+"&ore="+ra.Ore()+"&minute="+ra.Minute()+"&reviste="
-                    +ra.Reviste()+"&brosuri="+ra.Brosuri()+"&carti="+ra.Carti()+"&studi="+ra.Studi()+"&visite="+ra.Visite()+
+                data="id="+ra.ID()+"&"+"month="+stringDate+"&ore="+ra.Ore()+"&minute="+ra.Minute()+"&materiale="
+                    +ra.Materiale()+"&vizualizari="+ra.Vizualizari()+"&studi="+ra.Studi()+"&visite="+ra.Visite()+
                     "&partener="+ra.Partener()+"&"+"lastUpdate="+lastUpdateInt+endSubmit;
                 method="PUT";
                 url= restBase+"/"+ra.ID();
                 break;
         }
         post(data,url);
-        util .send({data:data,urlLink:url,method:method,authToken:my.restApi,type:"Command"},function(result){
+        util .send({data:data,urlLink:url ,method:method,authToken:my.restApi,type:"Command"},function(result){
             callback(result);
             //return result;
         });
@@ -618,10 +619,9 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
         this.Month    =ko.observable(data.month);
         this.Minute   =ko.observable(data.minute);
         this.Ore      =ko.observable(data.ore);
-        this.Brosuri  =ko.observable(data.brosuri);
+        this.Vizualizari  =ko.observable(data.vizualizari);
         this.Studi    =ko.observable(data.studi);
-        this.Carti    =ko.observable(data.carti);
-        this.Reviste  =ko.observable(data.reviste);
+        this.Materiale  =ko.observable(data.materiale);
         this.Visite   =ko.observable(data.visite);
         // this.Luna=ko.computed(function(){
         //   return new Date(data.Month).getMonth();
@@ -670,10 +670,9 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
                 //console.log(data.Partener());
                 //self.partner=ko.observable( data.Partener()).extend({requireValidation:""});
                 //self.visite = ko.observable(data.Visite()).extend({numericValidation: {overrideMessage:"Visite",min:0,max:12}});
-                //self.carti=ko.observable(   data.Carti()).extend({numericValidation: {overrideMessage:"carti",min:0,max:12}});
-                //self.reviste=ko.observable( data.Reviste()).extend({numericValidation: {overrideMessage:"reviste",min:0,max:12}});
+                //self.materiale=ko.observable( data.Materiale()).extend({numericValidation: {overrideMessage:"materiale",min:0,max:12}});
                 //self.studi=ko.observable(   data.Studi()).extend({numericValidation: {overrideMessage:"studii",min:0,max:12}});
-                //self.brosuri=ko.observable( data.Brosuri()).extend({numericValidation: {overrideMessage:"brosuri",min:0,max:12}});
+                //self.vizualizari=ko.observable( data.Vizualizari()).extend({numericValidation: {overrideMessage:"vizualizari",min:0,max:12}});
                 //self.date=ko.observable(                 data.date);
                 //self.dateComp=data;break;
             case "add":
@@ -684,9 +683,8 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
                 self.minuteM=ko.observable(  0).extend({numericValidation: {overrideMessage:"Minute",min:0,max:59}});
                 console.log(data.Partener());
                 self.partner=ko.observable( data.Partener()).extend({requireValidation:"jjj"});
-                self.reviste=ko.observable( data.Reviste()).extend({numericValidation: {overrideMessage:"reviste",min:0,max:40}});
-                self.brosuri=ko.observable( data.Brosuri()).extend({numericValidation: {overrideMessage:"brosuri",min:0,max:100}});
-                self.carti=ko.observable(   data.Carti()).extend({numericValidation: {overrideMessage:"carti",min:0,max:20}});
+                self.materiale=ko.observable( data.Materiale()).extend({numericValidation: {overrideMessage:"materiale",min:0,max:40}});
+                self.vizualizari=ko.observable( data.Vizualizari()).extend({numericValidation: {overrideMessage:"vizualizari",min:0,max:100}});
                 self.visite = ko.observable(data.Visite()).extend({numericValidation: {overrideMessage:"Visite",min:0,max:30}});
                 self.studi=ko.observable(   data.Studi()).extend({numericValidation: {overrideMessage:"studii",min:0,max:20}});
                 self.date=ko.observable(                 data.date);
@@ -727,9 +725,8 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
                         minute:returnNumber(self.minuteM()),
                         username:self.username(),
                         partener:returnString(self.partner()),
-                        carti:returnNumber(self.carti()),
-                        reviste:returnNumber(self.reviste()),
-                        brosuri:returnNumber(self.brosuri()),
+                        materiale:returnNumber(self.materiale()),
+                        vizualizari:returnNumber(self.vizualizari()),
                         visite:returnNumber(self.visite()),
                         studi:returnNumber(self.studi())},
                     self.date()));
@@ -924,21 +921,25 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             }
             return array2;
         }
-        this.executeNow=function(item,command){
+        this.executeNow=function(item,command,callback){
             self.RefreshTrue(10);
             var raportCommand=new myApp.RaportCommand(item,command,new Date());
             net.postRaportCommand(raportCommand,function(result){
                if(result.error!==true){
-                   self.RefreshTrue(50);
-                   debugger;
+                  // debugger;
+                   self.RefreshTrue(99);
                    switch (command){
 
-                       case "INSERT": item.ID(result.raport_id);
-                           break;
+                       case "INSERT": item.ID(result.raport_id);break;
                        case "UPDATE":break;
                        case "DELETE":break;
+
                    }
+                   callback({error:false,message:"all good"});
                }else{
+                   callback({error:true,message:"something bad happened"});
+                   self.RefreshTrue(99);
+                   self.listChanges.push(raportCommand);
                    return false;
                }
 
@@ -1107,11 +1108,11 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
         self.CurrentMonthView=myApp.monthNames[new Date().getMonth()];
         self.printCurrentMonth=ko.observable(new myApp.MonthView(myApp.monthNames[1]));
         var framework=new myApp.BogFramework();
-        self.User=ko.observable(new myApp.User("",""));
+        self.User=ko.observable(new myApp.User("marco2","123456"));
         var USERNAME="";
-        var rapCur=new myApp.Raport({Username:"boggfd",Ore:1,Minute:0,partener:"vlad",Reviste:2,Visite:3,Carti:4,Studi:5,Brosuri:9, Month:"2001-2-2 12:12"},new Date());
-        var rapNew=new myApp.Raport({username:"boggfd",ore:1,minute:0,partener:"ss",reviste:0,visite:0,carti:0,studi:0,brosuri:0, Month:"2001-2-2 12:12"},new Date());
-        var printNew=new myApp.Raport({Username:"boggfd",Ore:1,Minute:0,Partener:"ss",Reviste:0,Visite:0,Carti:0,Studi:0,Brosuri:0,Month:"2001-2-2 12:12"},new Date());
+        var rapCur=new myApp.Raport({Username:"boggfd",Ore:1,Minute:0,partener:"vlad",Materiale:2,Visite:3,Studi:5,Vizualizari:9, Month:"2001-2-2 12:12"},new Date());
+        var rapNew=new myApp.Raport({username:"boggfd",ore:1,minute:0,partener:"ss",materiale:0,visite:0,studi:0,vizualizari:0, Month:"2001-2-2 12:12"},new Date());
+        var printNew=new myApp.Raport({Username:"boggfd",Ore:1,Minute:0,Partener:"ss",Materiale:0,Visite:0,Studi:0,Vizualizari:0,Month:"2001-2-2 12:12"},new Date());
         //var userNew=new myApp.User("bog","nic");
         var userNew=new myApp.User("user","password");
 
@@ -1282,16 +1283,24 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             }
             // debugger;
             var year2=years.indexOf(fullYearPerson);
-            //self.raportsCollection()[parseInt(year)].listView()[montc].list.push(new myApp.Raport({Ore:ore,Minute:person.Minute,Reviste:person.Reviste},person.date));
+            //self.raportsCollection()[parseInt(year)].listView()[montc].list.push(new myApp.Raport({Ore:ore,Minute:person.Minute,Materiale:person.Materiale},person.date));
             self.raportsCollection()[parseInt(year2)].listView()[montc].list.push(person);
             console.log(person.Ore(),person.Username());
             //self.listChanges.push(person);
 
+            self.showProgress(true);
+           framework.executeNow(person,"INSERT",function(result) {
+                if(result.error===true){
+                    setDanger(true);
+                    self.messageResult(result.message);
+                }else{
+                    setDanger(false);
+                    self.messageResult(result.message);
+                }
+               }
+           );
 
-           var isSend= framework.executeNow(person,"INSERT");
-            if(isSend){
-                framework.insert(person);
-            }
+           // self.showProgress(false);
 
         }
         function SaveEdit(person){
@@ -1314,12 +1323,19 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             var year=years.indexOf(person.date.getFullYear());
             montc=person.date.getMonth();
             var ore=person.Ore;
-            //self.raportsCollection()[parseInt(year)].listView()[montc].list.push(new myApp.Raport({Ore:ore,Minute:person.Minute,Reviste:person.Reviste},person.date));
+            //self.raportsCollection()[parseInt(year)].listView()[montc].list.push(new myApp.Raport({Ore:ore,Minute:person.Minute,Materiale:person.Materiale},person.date));
             self.raportsCollection()[parseInt(year)].listView()[montc].list.push(person);
-           var isSend= framework.executeNow(person,"UPDATE");
-            if(isSend){
-                framework.update(person);
-            }
+            self.showProgress(true);
+            framework.executeNow(person,"UPDATE",function(result){
+               if(result.error===true){
+                   setDanger(true);
+                   self.messageResult(result.message);
+               }else{
+                   setDanger(false);
+                   self.messageResult(result.message);
+               }
+           });
+
         }
         self.onModalClose = function(rest) {
             alert("CLOSE!+rest");
@@ -1374,11 +1390,10 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             self.editModal.minuteM(rap.Minute());
             self.editModal.partner(rap.Partener());
             self.editModal.username(rap.Username());
-            self.editModal.reviste(rap.Reviste());
+            self.editModal.materiale(rap.Materiale());
             self.editModal.studi(rap.Studi());
-            self.editModal.carti(rap.Carti());
             self.editModal.visite(rap.Visite());
-            self.editModal.brosuri(rap.Brosuri());
+            self.editModal.vizualizari(rap.Vizualizari());
             self.editModal.date(rap.date);
             self.editModal.show(true);
 
@@ -1430,15 +1445,14 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             self.addRaport.oreM(1);
             self.addRaport.partner("singur");
             self.addRaport.username(USERNAME);
-            self.addRaport.reviste("");
+            self.addRaport.materiale("");
             self.addRaport.studi("");
-            self.addRaport.carti("");
             self.addRaport.visite("");
             self.addRaport.minuteM("");
-            self.addRaport.brosuri("");
+            self.addRaport.vizualizari("");
             self.addRaport.date(new Date());
             self.addRaport.show(true);
-            //  var  obsd3={Username:"boggfd",Ore:1,Minute:0,Reviste:2, Month:"2001-2-2 12:12"};
+            //  var  obsd3={Username:"boggfd",Ore:1,Minute:0,Materiale:2, Month:"2001-2-2 12:12"};
             //  var p=new myApp.Raport(obsd3,new Date());
             //  self.raportsCollection.push(p)  ;
             //   self.selectedRaport(p);
@@ -1465,11 +1479,16 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             self.selectedRaport(null);
 
             self.raportsCollection()[parseInt(year)].listView()[c].list.remove(rap);
-
-           var isSend=framework.executeNow(rap,"DELETE");
-            if(isSend){
-                framework.delete(rap);
-            }
+            self.showProgress(true);
+            framework.executeNow(rap,"DELETE",function(result){
+                if(result.error===true){
+                    setDanger(true);
+                    self.messageResult(result.message);
+                }else{
+                    setDanger(false);
+                    self.messageResult(result.message);
+                }
+            });
         };
     }
     myApp.RaportsViewModel= RaportsViewModel;
@@ -1509,17 +1528,17 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             total+=self.hours();
             return total;
         } );
-        self.SumReviste=ko.computed(function(){
+        self.SumMateriale=ko.computed(function(){
             var total=0;
             for (var i = 0; i <self.list().length; i++)
-                total+=parseInt(self.list()[i].Reviste()) ;
+                total+=parseInt(self.list()[i].Materiale()) ;
             // total+=self.hours();
             return total;
         } );
-        self.SumBrosuri=ko.computed(function(){
+        self.SumVizualizari=ko.computed(function(){
             var total=0;
             for (var i = 0; i <self.list().length; i++)
-                total+=parseInt(self.list()[i].Brosuri()) ;
+                total+=parseInt(self.list()[i].Vizualizari()) ;
             // total+=self.hours();
             return total;
         } );
@@ -1527,13 +1546,6 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             var total=0;
             for (var i = 0; i <self.list().length; i++)
                 total+=parseInt(self.list()[i].Visite()) ;
-            // total+=self.hours();
-            return total;
-        } );
-        self.SumCarti=ko.computed(function(){
-            var total=0;
-            for (var i = 0; i <self.list().length; i++)
-                total+=parseInt(self.list()[i].Carti()) ;
             // total+=self.hours();
             return total;
         } );
@@ -1599,24 +1611,17 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             // total+=self.hours();
             return total;
         } );
-        self.SumBrosuri=ko.computed(function(){
+        self.SumVizualizari=ko.computed(function(){
             var total=0;
             for (var i = 0; i <self.listView().length; i++)
-                total+=parseInt(self.listView()[i].SumBrosuri()) ;
+                total+=parseInt(self.listView()[i].SumVizualizari()) ;
             // total+=self.hours();
             return total;
         } );
-        self.SumReviste=ko.computed(function(){
+        self.SumMateriale=ko.computed(function(){
             var total=0;
             for (var i = 0; i <self.listView().length; i++)
-                total+=parseInt(self.listView()[i].SumReviste()) ;
-            // total+=self.hours();
-            return total;
-        } );
-        self.SumCarti=ko.computed(function(){
-            var total=0;
-            for (var i = 0; i <self.listView().length; i++)
-                total+=parseInt(self.listView()[i].SumCarti()) ;
+                total+=parseInt(self.listView()[i].SumMateriale()) ;
             // total+=self.hours();
             return total;
         } );

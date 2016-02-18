@@ -3,6 +3,7 @@
  */
 var map;
 var styles;
+var styles3d;
 var encoding;
 function load()
 {   styles=[ { "elementType": "labels", "stylers": [ { "visibility": "off" } ] },
@@ -12,6 +13,7 @@ function load()
         //center: new google.maps.LatLng(44.32476, 23.813470),
         center: new google.maps.LatLng(44.31649454929054,23.80039930343628),
         mapTypeId:google.maps.MapTypeId.ROADMAP,
+        //mapTypeId:google.maps.MapTypeId.HYBRID,
         disableDefaultUI: true,
         scrollwheel:true
 
