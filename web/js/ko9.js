@@ -343,7 +343,7 @@ ko.bindingHandlers.bootstrapModal = {
         };
         vm.action = function() {
             vm.onAction();
-        }
+        };
         ko.utils.toggleDomNodeCssClass(element, "modal  fade", true);
         ko.renderTemplate("myModal", vm, null, element);
 
@@ -516,15 +516,15 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
     }
 
     my.restApi=authToken;
-    my.Login = function (username, password,callback) {
+    my.Login = function (email, password,callback) {
         //  var isTrue=post(username,password) ;
-        var stringToPost = createString({username:username, password:password});
+        var stringToPost = createString({email:email, password:password});
         post(stringToPost,restLogin);
         util.send({data:stringToPost,urlLink:restLogin,method:"POST",type:"Login"},function(result){
             // results=result;
 
             if(result.error===false){
-                user=username;
+                user=result.name;
                 //alert(result.api_key);
                 my.restApi=result.api_key;
 
@@ -549,7 +549,7 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             // alert(util.raports.length);
             return util.raports;
         }
-    }
+    };
     my.ViewData = function (callback) {
         var raports=[];
         if(my.restApi===""){
@@ -945,7 +945,7 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
 
 
             });
-        }
+        };
         this.execute1=function(){
             var arrayLength=self.listChanges().length;
             // listChangesObs.push(listChanges);
@@ -958,7 +958,7 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
                 doRepeat(self.listChanges()[self.listChanges().length-1]);
             }
 
-        }
+        };
         var nrAcc;
         var nrTimes;
         var repeatNr;
@@ -1002,6 +1002,7 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
         this.password=ko.observable(password);
         this.email=ko.observable("");
         this.username=ko.observable("");
+        this.isAuth=ko.observable(false);
     }
     myApp.User=User;
 }(myApp));
@@ -1096,7 +1097,22 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
     myApp.ParseBog=parseBog;
 
 }(myApp,Parse));
-(function(myApp,net,parse){
+(function(myApp){
+    myApp.Storage={
+        user:{name:"",api_ky:"",email:""},
+        get User(){
+            return JSON.parse(window.localStorage.getItem("user"));
+        },
+        set User(user){
+            window.localStorage.setItem("user",JSON.stringify(user));
+            this.user=user;
+        },
+        clear:function(){
+            window.localStorage.clear();
+        }
+    };
+}(myApp));
+(function(myApp,net,storage){
     function RaportsViewModel(){
         var self=this;
         self.name="bog5";
@@ -1147,27 +1163,26 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
         self.selected=ko.observable();
 
         self.LogonUser=function(){
-           // var listNew=[];
-            parse.name="alex";
-            var d=parse.name;
-            //parse.login("marco2","123456",function(parseRes){
-            //   // debugger;
-            //    //ok;
-            //    var d=parseRes;
-            //});
+
             self.progress(20);
             self.showProgress(true);
-            net.Login(self.User().name(),self.User().password(),function(result){
+            net.Login(self.User().email(),self.User().password(),function(result){
                 console.log(result);
                 self.progress(100);
                 setTimeout(function(){
                     self.showProgress(false);
                 },2000);
                 if(result.error===false){
+                    debugger;
+                    self.User().name(result.name);
                     setDanger(false);
                     self.messageResult("welcome "+self.User().name());
                     // GetMonthsYaer(result.Raports, listNew);
                     loadReports();
+                    delete result.error;
+                    storage.User=result;
+                    self.User().name(result.name);
+                    self.User().isAuth(true);
                 }else{
                     setDanger(true);
                     self.messageResult(result.message);
@@ -1225,9 +1240,29 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             newPage.print();
             //window.print();
         }
+        self.Logout = function(){
+            self.raportsCollection.removeAll();
+            storage.clear();
+            self.User().email("");
+            self.User().name("");
+            self.User().password("");
+            self.User().isAuth(false);
 
+        };
+        if(storage.User !== null){
+            if(storage.User.api_key){
+                var user=storage.User;
+                net.restApi = user.api_key;
+                self.User().name(user.name);
+                self.User().email(user.email);
+                self.User().isAuth(true);
+                loadReports();
+            }else{
+                self.User().isAuth(false);
 
+            }
 
+        }
         function GetMonthsYaer(r, listNew) {
             for (var i = 0; i < r.length; i++) {
                 var reportFromJson = r[i];
@@ -1339,10 +1374,10 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
         }
         self.onModalClose = function(rest) {
             alert("CLOSE!+rest");
-        }
+        };
         self.onModalAction = function() {
             ///alert("ACTION!");
-        }
+        };
 
 
         var ProgressSum;
@@ -1492,7 +1527,7 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
         };
     }
     myApp.RaportsViewModel= RaportsViewModel;
-})(myApp,myApp.net,myApp.ParseBog);
+})(myApp,myApp.net,myApp.Storage);
 
 (function (myApp){
     function MonthView(luna,vector){
@@ -1573,29 +1608,29 @@ myApp.monthNames = [ "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie
             self.detail(true);
             console.log(self.detail); debugger;
 
-        }
+        };
         self.disableDetail=function(){
             self.detail(false);
             if   ( self.detail()==false)
                 self.detail(true);
             console.log("detail",self.detail());
             debugger;
-        }
+        };
         self.isVisible=function(){
             if   ( self.detail()==false)
                 self.detail(true);
 
             $("#listWiew").slice();
-        }
+        };
         self.hideVisible=function(){
 
             // self.detail(false);
             self.detail(!self.detail);
 
-        }
+        };
         self.viewVisible=function(){
             self.detail(true);
-        }
+        };
 
         self.SumOre=ko.computed(function(){
             var total=0;

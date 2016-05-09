@@ -99,12 +99,28 @@
             </ul>
 
             <form class="navbar-form navbar-right">
-                <input type="text" class="form-control col-lg-8" placeholder="Email" data-bind="value:User().name">
-                <input type="password" class="form-control col-lg-8" placeholder="Password"
-                       data-bind="value:User().password">
-                <button type="submit" data-bind="click:LogonUser" class="btn btn-success">Sign in</button>
-                <button  data-bind="click:registerUser" class="btn btn-success">New User</button>
+                <div data-bind="visible:!User().isAuth()">
+                    <input type="text" class="form-control col-lg-8" placeholder="Email" data-bind="value:User().email">
+                    <input type="password" class="form-control col-lg-8" placeholder="Password"
+                           data-bind="value:User().password">
+                    <button type="submit" data-bind="click:LogonUser" class="btn btn-success">Sign in</button>
+                    <button  data-bind="click:registerUser" class="btn btn-success">New User</button>
 
+                </div>
+
+                <div data-bind="visible:User().isAuth">
+                    <div class="input-group">
+                        <span class="input-group-addon" data-bind="text:User().name()">></span>
+                        <div class="input-group-btn">
+                            <div class="input-group-btn">
+                                <button type="button"  class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <!-- data-bind="text:User().name()"--> <span class="caret"></span></button>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a data-bind="click:Logout"  >Log out</a></li>
+                                </ul>
+                            </div><!-- /btn-group -->
+                        </div><!-- /input-group -->
+                    </div>
+                </div>
                 <!--<a href="#newUserDialog" data-toggle="modal" class="btn btn-success">New user</a>-->
             </form>
         </div>
@@ -130,7 +146,7 @@
                     <form class="navbar-form " role="search">
                         <div class="form-group">
                             <input type="text" class="form-control col-lg-8" placeholder="Email"
-                                   data-bind="value:User().name">
+                                   data-bind="value:User().email">
                             <input type="password" class="form-control col-lg-8" placeholder="Password"
                                    data-bind="value:User().password">
                             <button type="submit" data-bind="click:LogonUser" class="btn btn-success">Sign in</button>
